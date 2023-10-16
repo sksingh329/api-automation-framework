@@ -6,7 +6,10 @@ import io.restassured.response.Response;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+import qa.app.gorest.pojo.UserPOJO;
+import qa.core.utils.RandomEmailGenerator;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -72,5 +75,34 @@ public class UsersTest {
         else{
             Assert.assertEquals(userCount,paginationTotal);
         }
+    }
+    @Test
+    public void createUserTest(){
+        String name = "Test User";
+        String email = RandomEmailGenerator.generateRandomEmail();
+        String gender = "male";
+        String status = "active";
+
+        UserPOJO user = new UserPOJO(name,email,gender,status);
+
+        Response createUserResponse = RestAssured.given()
+                .header("Content-Type","application/json")
+                .header("Authorization","Bearer ce18e719571db0642120abcee05b7607754782c82ed7fdcd8b78c40a6bccf241")
+                .body(user)
+                .post();
+
+        createUserResponse.then().log().all();
+
+        Assert.assertEquals(createUserResponse.statusCode(),201);
+        String resourceURI = createUserResponse.header("location");
+
+        List<String> parser = Arrays.asList(resourceURI.split("/"));
+        String id = parser.get(parser.size()-1);
+        int userId = Integer.parseInt(id);
+
+        JsonPath createUserResponseJsonPath = createUserResponse.jsonPath();
+        int responseUserId = createUserResponseJsonPath.getInt("id");
+
+        Assert.assertEquals(responseUserId,userId);
     }
 }
