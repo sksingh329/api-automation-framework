@@ -1,6 +1,7 @@
 package qa.gorest.tests;
 
 import io.restassured.RestAssured;
+import io.restassured.http.Headers;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import org.testng.Assert;
@@ -104,5 +105,61 @@ public class UsersTest {
         int responseUserId = createUserResponseJsonPath.getInt("id");
 
         Assert.assertEquals(responseUserId,userId);
+        Assert.assertEquals(createUserResponseJsonPath.get("name"),name);
+        Assert.assertEquals(createUserResponseJsonPath.get("email"),email);
+        Assert.assertEquals(createUserResponseJsonPath.get("gender"),gender);
+        Assert.assertEquals(createUserResponseJsonPath.get("status"),status);
+
+        // Validate Headers are not present
+        Headers responseHeaders = createUserResponse.headers();
+        Assert.assertFalse(responseHeaders.hasHeaderWithName("x-pagination-page"));
+        Assert.assertFalse(responseHeaders.hasHeaderWithName("x-pagination-limit"));
+        Assert.assertFalse(responseHeaders.hasHeaderWithName("x-pagination-total"));
+        Assert.assertFalse(responseHeaders.hasHeaderWithName("x-pagination-pages"));
+    }
+    @Test
+    public void getUserTest(){
+        String name = "Test User";
+        String email = RandomEmailGenerator.generateRandomEmail();
+        String gender = "male";
+        String status = "active";
+
+        UserPOJO user = new UserPOJO(name,email,gender,status);
+
+        Response createUserResponse = RestAssured.given()
+                .header("Content-Type","application/json")
+                .header("Authorization","Bearer ce18e719571db0642120abcee05b7607754782c82ed7fdcd8b78c40a6bccf241")
+                .body(user)
+                .post();
+
+        JsonPath createUserResponseJsonPath = createUserResponse.jsonPath();
+        int responseUserId = createUserResponseJsonPath.getInt("id");
+
+        // GET User
+        Response getUserResponse = RestAssured.given().log().all()
+                .pathParam("id",responseUserId)
+                .header("Content-Type","application/json")
+                .header("Authorization","Bearer ce18e719571db0642120abcee05b7607754782c82ed7fdcd8b78c40a6bccf241")
+                .get("{id}");
+
+        getUserResponse.then().log().all();
+
+
+        Assert.assertEquals(getUserResponse.statusCode(),200);
+
+        // Validate Headers are not present
+        Headers responseHeaders = createUserResponse.headers();
+        Assert.assertEquals(responseHeaders.getValue("Content-Type"),"application/json; charset=utf-8");
+        Assert.assertFalse(responseHeaders.hasHeaderWithName("x-pagination-page"));
+        Assert.assertFalse(responseHeaders.hasHeaderWithName("x-pagination-limit"));
+        Assert.assertFalse(responseHeaders.hasHeaderWithName("x-pagination-total"));
+        Assert.assertFalse(responseHeaders.hasHeaderWithName("x-pagination-pages"));
+
+        JsonPath getUserResponseJsonPath = getUserResponse.jsonPath();
+        Assert.assertEquals(getUserResponseJsonPath.getInt("id"),responseUserId);
+        Assert.assertEquals(getUserResponseJsonPath.getString("name"),name);
+        Assert.assertEquals(getUserResponseJsonPath.getString("email"),email);
+        Assert.assertEquals(getUserResponseJsonPath.getString("gender"),gender);
+        Assert.assertEquals(getUserResponseJsonPath.getString("status"),status);
     }
 }
