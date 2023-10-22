@@ -27,8 +27,8 @@ public class UsersTest {
         //Fetching response headers
         int paginationLimit = Integer.parseInt(listUserResponse.getHeader("x-pagination-limit"));
         int paginationTotal = Integer.parseInt(listUserResponse.getHeader("x-pagination-total"));
-        System.out.println(listUserResponse.getHeader("Content-Type"));
-        System.out.println(listUserResponse.getHeader("x-pagination-page"));
+        Assert.assertEquals(listUserResponse.getHeader("Content-Type"),"application/json; charset=utf-8");
+        Assert.assertEquals(listUserResponse.getHeader("x-pagination-page"),"1");
         System.out.println(listUserResponse.getHeader("x-pagination-limit"));
         System.out.println(listUserResponse.getHeader("x-pagination-total"));
         System.out.println(listUserResponse.getHeader("x-pagination-pages"));
