@@ -147,7 +147,7 @@ public class UsersTest {
 
         Assert.assertEquals(getUserResponse.statusCode(),200);
 
-        // Validate Headers are not present
+        // Validate Headers
         Headers responseHeaders = createUserResponse.headers();
         Assert.assertEquals(responseHeaders.getValue("Content-Type"),"application/json; charset=utf-8");
         Assert.assertFalse(responseHeaders.hasHeaderWithName("x-pagination-page"));
@@ -161,5 +161,86 @@ public class UsersTest {
         Assert.assertEquals(getUserResponseJsonPath.getString("email"),email);
         Assert.assertEquals(getUserResponseJsonPath.getString("gender"),gender);
         Assert.assertEquals(getUserResponseJsonPath.getString("status"),status);
+    }
+
+    @Test
+    public void updateUserTest(){
+        String name = "Test User";
+        String email = RandomEmailGenerator.generateRandomEmail();
+        String gender = "male";
+        String status = "active";
+
+        UserPOJO user = new UserPOJO(name,email,gender,status);
+
+        Response createUserResponse = RestAssured.given()
+                .header("Content-Type","application/json")
+                .header("Authorization","Bearer ce18e719571db0642120abcee05b7607754782c82ed7fdcd8b78c40a6bccf241")
+                .body(user)
+                .post();
+
+        JsonPath createUserResponseJsonPath = createUserResponse.jsonPath();
+        int responseUserId = createUserResponseJsonPath.getInt("id");
+
+        //Update User
+        String updatedName = "Updated User";
+        UserPOJO updatedUser = new UserPOJO(updatedName,email,gender,status);
+
+        Response updateUserResponse = RestAssured.given()
+                .header("Content-Type","application/json")
+                .header("Authorization","Bearer ce18e719571db0642120abcee05b7607754782c82ed7fdcd8b78c40a6bccf241")
+                .body(updatedUser)
+                .pathParam("id",responseUserId)
+                .put("{id}");
+
+        Assert.assertEquals(updateUserResponse.statusCode(),200);
+
+        // Validate Headers
+        Headers responseHeaders = createUserResponse.headers();
+        Assert.assertEquals(responseHeaders.getValue("Content-Type"),"application/json; charset=utf-8");
+        Assert.assertFalse(responseHeaders.hasHeaderWithName("x-pagination-page"));
+        Assert.assertFalse(responseHeaders.hasHeaderWithName("x-pagination-limit"));
+        Assert.assertFalse(responseHeaders.hasHeaderWithName("x-pagination-total"));
+        Assert.assertFalse(responseHeaders.hasHeaderWithName("x-pagination-pages"));
+
+        JsonPath getUserResponseJsonPath = updateUserResponse.jsonPath();
+        Assert.assertEquals(getUserResponseJsonPath.getInt("id"),responseUserId);
+        Assert.assertEquals(getUserResponseJsonPath.getString("name"),updatedName);
+        Assert.assertEquals(getUserResponseJsonPath.getString("email"),email);
+        Assert.assertEquals(getUserResponseJsonPath.getString("gender"),gender);
+        Assert.assertEquals(getUserResponseJsonPath.getString("status"),status);
+    }
+    @Test
+    public void deleteUserTest(){
+        String name = "Test User";
+        String email = RandomEmailGenerator.generateRandomEmail();
+        String gender = "male";
+        String status = "active";
+
+        UserPOJO user = new UserPOJO(name,email,gender,status);
+
+        Response createUserResponse = RestAssured.given()
+                .header("Content-Type","application/json")
+                .header("Authorization","Bearer ce18e719571db0642120abcee05b7607754782c82ed7fdcd8b78c40a6bccf241")
+                .body(user)
+                .post();
+
+        JsonPath createUserResponseJsonPath = createUserResponse.jsonPath();
+        int responseUserId = createUserResponseJsonPath.getInt("id");
+
+        //Delete User
+        Response deleteUserResponse = RestAssured.given()
+                .header("Authorization","Bearer ce18e719571db0642120abcee05b7607754782c82ed7fdcd8b78c40a6bccf241")
+                .pathParam("id",responseUserId)
+                .delete("{id}");
+
+        Assert.assertEquals(deleteUserResponse.statusCode(),204);
+
+        // Validate Headers
+        Headers responseHeaders = createUserResponse.headers();
+        Assert.assertEquals(responseHeaders.getValue("Content-Type"),"application/json; charset=utf-8");
+        Assert.assertFalse(responseHeaders.hasHeaderWithName("x-pagination-page"));
+        Assert.assertFalse(responseHeaders.hasHeaderWithName("x-pagination-limit"));
+        Assert.assertFalse(responseHeaders.hasHeaderWithName("x-pagination-total"));
+        Assert.assertFalse(responseHeaders.hasHeaderWithName("x-pagination-pages"));
     }
 }
