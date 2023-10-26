@@ -35,11 +35,13 @@ public class UsersTest {
 
         //Parsing response body
         JsonPath responseBodyJsonPath = listUserResponse.jsonPath();
-        System.out.println(responseBodyJsonPath.getString("[0].id"));
-        System.out.println(responseBodyJsonPath.getString("[0].name"));
-        System.out.println(responseBodyJsonPath.getString("[0].email"));
-        System.out.println(responseBodyJsonPath.getString("[0].gender"));
-        System.out.println(responseBodyJsonPath.getString("[0].status"));
+        responseBodyJsonPath.setRootPath("[0].");
+        System.out.println(responseBodyJsonPath.getString("id"));
+        System.out.println(responseBodyJsonPath.getString("name"));
+        System.out.println(responseBodyJsonPath.getString("email"));
+        System.out.println(responseBodyJsonPath.getString("gender"));
+        System.out.println(responseBodyJsonPath.getString("status"));
+        responseBodyJsonPath.setRootPath("");
 
         //Get the count of users in response
         int userCount = responseBodyJsonPath.getList("$").size();
@@ -143,7 +145,6 @@ public class UsersTest {
                 .get("{id}");
 
         getUserResponse.then().log().all();
-
 
         Assert.assertEquals(getUserResponse.statusCode(),200);
 
