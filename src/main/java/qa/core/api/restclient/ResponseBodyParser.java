@@ -5,10 +5,10 @@ import io.restassured.response.Response;
 
 import java.util.List;
 
-public class ResponseBody {
+public class ResponseBodyParser {
     private JsonPath jsonPath;
 
-    public ResponseBody(Response response){
+    public ResponseBodyParser(Response response){
         jsonPath = response.jsonPath();
     }
     public void setRootPath(String rootPath){
