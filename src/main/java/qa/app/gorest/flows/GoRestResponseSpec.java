@@ -18,4 +18,10 @@ public class GoRestResponseSpec {
         ResponseSpecification responseSpecification = responseSpecBuilder.build();
         return responseSpecification;
     }
+    public static ResponseSpecification deleteResponseSpec(){
+        ResponseSpecBuilder responseSpecBuilder = new ResponseSpecBuilder();
+        responseSpecBuilder.expectStatusCode(204);
+        ResponseSpecification responseSpecification = responseSpecBuilder.build();
+        return responseSpecification;
+    }
 }

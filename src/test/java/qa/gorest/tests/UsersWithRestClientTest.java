@@ -112,7 +112,8 @@ public class UsersWithRestClientTest {
 
         Response createUserResponse = GoRestCreateUser.createUser(name,email,gender,status);
 
-        Assert.assertEquals(createUserResponse.statusCode(),201);
+        createUserResponse.then().spec(GoRestResponseSpec.postResponseSpec());
+
         String resourceURI = createUserResponse.header("location");
 
         List<String> parser = Arrays.asList(resourceURI.split("/"));
@@ -150,7 +151,7 @@ public class UsersWithRestClientTest {
 
         Response getUserResponse = request.createRequest().get("{id}");
 
-        Assert.assertEquals(getUserResponse.statusCode(),200);
+        getUserResponse.then().spec(GoRestResponseSpec.getResponseSpec());
 
         responseBodyParser = new ResponseBodyParser(getUserResponse);
 
@@ -188,6 +189,7 @@ public class UsersWithRestClientTest {
         request.setRequestBody(updatedUser);
 
         Response updateUserResponse = request.createRequest().put("{id}");
+        updateUserResponse.then().spec(GoRestResponseSpec.getResponseSpec());
 
         responseBodyParser = new ResponseBodyParser(updateUserResponse);
 
@@ -220,6 +222,7 @@ public class UsersWithRestClientTest {
         request.setPathParams("id", String.valueOf(responseUserId));
 
         Response deleteUserResponse = request.createRequest().delete("{id}");
+        deleteUserResponse.then().spec(GoRestResponseSpec.deleteResponseSpec());
 
         Assert.assertEquals(deleteUserResponse.statusCode(),204);
 
