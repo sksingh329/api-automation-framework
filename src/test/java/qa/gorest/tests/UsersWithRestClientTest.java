@@ -1,13 +1,18 @@
 package qa.gorest.tests;
 
+import io.restassured.http.Headers;
 import io.restassured.response.Response;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+import qa.app.gorest.flows.GoRestCreateUser;
+import qa.app.gorest.flows.GoRestResponseSpec;
+import qa.app.gorest.pojo.UserPOJO;
 import qa.core.api.restclient.Request;
 import qa.core.api.restclient.ResponseBodyParser;
 import qa.core.utils.RandomEmailGenerator;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -26,7 +31,7 @@ public class UsersWithRestClientTest {
     public void listAllUsersTest(){
         Response response = request.createRequest().get();
 
-        response.then().spec(GoRestTestHelper.getResponseSpec());
+        response.then().spec(GoRestResponseSpec.getResponseSpec());
 
         //Validate headers
         Assert.assertEquals(response.getHeader("x-pagination-page"),"1");
@@ -66,7 +71,7 @@ public class UsersWithRestClientTest {
         request.setQueryParams("gender","male");
         Response response = request.createRequest().get();
 
-        response.then().spec(GoRestTestHelper.getResponseSpec());
+        response.then().spec(GoRestResponseSpec.getResponseSpec());
 
         //Validate headers
         Assert.assertEquals(response.getHeader("x-pagination-page"),"1");
@@ -105,9 +110,28 @@ public class UsersWithRestClientTest {
         String gender = "male";
         String status = "active";
 
-        Response createUserResponse = GoRestTestHelper.createUser(name,email,gender,status);
+        Response createUserResponse = GoRestCreateUser.createUser(name,email,gender,status);
 
         Assert.assertEquals(createUserResponse.statusCode(),201);
+        String resourceURI = createUserResponse.header("location");
+
+        List<String> parser = Arrays.asList(resourceURI.split("/"));
+        String userId = parser.get(parser.size()-1);
+
+        ResponseBodyParser responseBodyParser = new ResponseBodyParser(createUserResponse);
+
+        Assert.assertEquals(responseBodyParser.get("id").toString(),userId);
+        Assert.assertEquals(responseBodyParser.get("name"),name);
+        Assert.assertEquals(responseBodyParser.get("email"),email);
+        Assert.assertEquals(responseBodyParser.get("gender"),gender);
+        Assert.assertEquals(responseBodyParser.get("status"),status);
+
+        // Validate Headers are not present
+        Headers responseHeaders = createUserResponse.headers();
+        Assert.assertFalse(responseHeaders.hasHeaderWithName("x-pagination-page"));
+        Assert.assertFalse(responseHeaders.hasHeaderWithName("x-pagination-limit"));
+        Assert.assertFalse(responseHeaders.hasHeaderWithName("x-pagination-total"));
+        Assert.assertFalse(responseHeaders.hasHeaderWithName("x-pagination-pages"));
     }
 
     @Test
@@ -117,15 +141,94 @@ public class UsersWithRestClientTest {
         String gender = "male";
         String status = "active";
 
-        Response createUserResponse = GoRestTestHelper.createUser(name,email,gender,status);
+        Response createUserResponse = GoRestCreateUser.createUser(name,email,gender,status);
 
         ResponseBodyParser responseBodyParser = new ResponseBodyParser(createUserResponse);
-        int responseUserId = responseBodyParser.get("id");
+        String responseUserId = responseBodyParser.get("id").toString();
 
         request.setPathParams("id", String.valueOf(responseUserId));
 
-        Response response = request.createRequest().get("{id}");
+        Response getUserResponse = request.createRequest().get("{id}");
 
-        Assert.assertEquals(response.statusCode(),200);
+        Assert.assertEquals(getUserResponse.statusCode(),200);
+
+        responseBodyParser = new ResponseBodyParser(getUserResponse);
+
+        Assert.assertEquals(responseBodyParser.get("id").toString(),responseUserId);
+        Assert.assertEquals(responseBodyParser.get("name"),name);
+        Assert.assertEquals(responseBodyParser.get("email"),email);
+        Assert.assertEquals(responseBodyParser.get("gender"),gender);
+        Assert.assertEquals(responseBodyParser.get("status"),status);
+
+        // Validate Headers are not present
+        Headers responseHeaders = createUserResponse.headers();
+        Assert.assertFalse(responseHeaders.hasHeaderWithName("x-pagination-page"));
+        Assert.assertFalse(responseHeaders.hasHeaderWithName("x-pagination-limit"));
+        Assert.assertFalse(responseHeaders.hasHeaderWithName("x-pagination-total"));
+        Assert.assertFalse(responseHeaders.hasHeaderWithName("x-pagination-pages"));
+    }
+    @Test
+    public void updateUserTest() {
+        String name = "Test User";
+        String email = RandomEmailGenerator.generateRandomEmail();
+        String gender = "male";
+        String status = "active";
+
+        Response createUserResponse = GoRestCreateUser.createUser(name, email, gender, status);
+
+        ResponseBodyParser responseBodyParser = new ResponseBodyParser(createUserResponse);
+        String responseUserId = responseBodyParser.get("id").toString();
+
+        request.setPathParams("id", String.valueOf(responseUserId));
+
+        //Update User
+        String updatedName = "Updated User";
+        UserPOJO updatedUser = new UserPOJO(updatedName,email,gender,status);
+
+        request.setRequestBody(updatedUser);
+
+        Response updateUserResponse = request.createRequest().put("{id}");
+
+        responseBodyParser = new ResponseBodyParser(updateUserResponse);
+
+        Assert.assertEquals(responseBodyParser.get("id").toString(),responseUserId);
+        Assert.assertEquals(responseBodyParser.get("name"),name);
+        Assert.assertEquals(responseBodyParser.get("email"),email);
+        Assert.assertEquals(responseBodyParser.get("gender"),gender);
+        Assert.assertEquals(responseBodyParser.get("status"),status);
+
+        // Validate Headers are not present
+        Headers responseHeaders = createUserResponse.headers();
+        Assert.assertFalse(responseHeaders.hasHeaderWithName("x-pagination-page"));
+        Assert.assertFalse(responseHeaders.hasHeaderWithName("x-pagination-limit"));
+        Assert.assertFalse(responseHeaders.hasHeaderWithName("x-pagination-total"));
+        Assert.assertFalse(responseHeaders.hasHeaderWithName("x-pagination-pages"));
+    }
+
+    @Test
+    public void deleteUserTest() {
+        String name = "Test User";
+        String email = RandomEmailGenerator.generateRandomEmail();
+        String gender = "male";
+        String status = "active";
+
+        Response createUserResponse = GoRestCreateUser.createUser(name, email, gender, status);
+
+        ResponseBodyParser responseBodyParser = new ResponseBodyParser(createUserResponse);
+        String responseUserId = responseBodyParser.get("id").toString();
+
+        request.setPathParams("id", String.valueOf(responseUserId));
+
+        Response deleteUserResponse = request.createRequest().delete("{id}");
+
+        Assert.assertEquals(deleteUserResponse.statusCode(),204);
+
+        // Validate Headers
+        Headers responseHeaders = createUserResponse.headers();
+        Assert.assertEquals(responseHeaders.getValue("Content-Type"),"application/json; charset=utf-8");
+        Assert.assertFalse(responseHeaders.hasHeaderWithName("x-pagination-page"));
+        Assert.assertFalse(responseHeaders.hasHeaderWithName("x-pagination-limit"));
+        Assert.assertFalse(responseHeaders.hasHeaderWithName("x-pagination-total"));
+        Assert.assertFalse(responseHeaders.hasHeaderWithName("x-pagination-pages"));
     }
 }
