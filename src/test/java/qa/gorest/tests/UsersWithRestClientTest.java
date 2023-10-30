@@ -16,15 +16,13 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
-public class UsersWithRestClientTest {
+public class UsersWithRestClientTest extends BaseTest{
     private Request request;
-    private String baseUri = "https://gorest.co.in";
-    private String basePath = "/public/v2/users";
 
     @BeforeMethod
     public void setup(){
-        request = new Request(baseUri,basePath);
-        request.setRequestHeaders("Authorization","Bearer ce18e719571db0642120abcee05b7607754782c82ed7fdcd8b78c40a6bccf241");
+        request = new Request(properties.getProperty("baseUri"),properties.getProperty("usersBasePath"));
+        request.setRequestHeaders("Authorization","Bearer "+properties.getProperty("apiKey"));
     }
 
     @Test
@@ -110,7 +108,7 @@ public class UsersWithRestClientTest {
         String gender = "male";
         String status = "active";
 
-        Response createUserResponse = GoRestCreateUser.createUser(name,email,gender,status);
+        Response createUserResponse = GoRestCreateUser.createUser(properties,name,email,gender,status);
 
         createUserResponse.then().spec(GoRestResponseSpec.postResponseSpec());
 
@@ -142,7 +140,7 @@ public class UsersWithRestClientTest {
         String gender = "male";
         String status = "active";
 
-        Response createUserResponse = GoRestCreateUser.createUser(name,email,gender,status);
+        Response createUserResponse = GoRestCreateUser.createUser(properties,name,email,gender,status);
 
         ResponseBodyParser responseBodyParser = new ResponseBodyParser(createUserResponse);
         String responseUserId = responseBodyParser.get("id").toString();
@@ -175,7 +173,7 @@ public class UsersWithRestClientTest {
         String gender = "male";
         String status = "active";
 
-        Response createUserResponse = GoRestCreateUser.createUser(name, email, gender, status);
+        Response createUserResponse = GoRestCreateUser.createUser(properties,name, email, gender, status);
 
         ResponseBodyParser responseBodyParser = new ResponseBodyParser(createUserResponse);
         String responseUserId = responseBodyParser.get("id").toString();
@@ -214,7 +212,7 @@ public class UsersWithRestClientTest {
         String gender = "male";
         String status = "active";
 
-        Response createUserResponse = GoRestCreateUser.createUser(name, email, gender, status);
+        Response createUserResponse = GoRestCreateUser.createUser(properties,name, email, gender, status);
 
         ResponseBodyParser responseBodyParser = new ResponseBodyParser(createUserResponse);
         String responseUserId = responseBodyParser.get("id").toString();
