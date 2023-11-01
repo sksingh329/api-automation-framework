@@ -1,22 +1,27 @@
 package qa.core.utils;
 
-import java.io.FileInputStream;
+import qa.core.exceptions.NoPropertyFoundException;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
 public class PropertiesUtils {
-    private Properties properties = new Properties();
+    private final Properties properties = new Properties();
 
     public PropertiesUtils(InputStream fis){
-        try{
+        try(fis){
             properties.load(fis);
         } catch (IOException e){
-            // throw Base Exception
             e.printStackTrace();
         }
+
     }
-    public Properties getProperties(){
-        return properties;
+    public String getProperty(String key){
+        String propertyValue = properties.getProperty(key);
+        if(propertyValue == null){
+            throw new NoPropertyFoundException("No property found for key : "+key);
+        }
+        return propertyValue;
     }
 }

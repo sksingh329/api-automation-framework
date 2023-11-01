@@ -3,11 +3,10 @@ package qa.app.gorest.flows;
 import io.restassured.response.Response;
 import qa.app.gorest.pojo.UserPOJO;
 import qa.core.api.restclient.Request;
-
-import java.util.Properties;
+import qa.core.utils.PropertiesUtils;
 
 public class GoRestCreateUser {
-    public static Response createUser(Properties properties, String name, String email, String gender, String status){
+    public static Response createUser(PropertiesUtils properties, String name, String email, String gender, String status){
         String baseUri = properties.getProperty("baseUri");
         String basePath = properties.getProperty("usersBasePath");
 
