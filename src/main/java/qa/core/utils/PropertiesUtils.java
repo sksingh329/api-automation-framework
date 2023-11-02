@@ -20,7 +20,7 @@ public class PropertiesUtils {
     public String getProperty(String key){
         String propertyValue = properties.getProperty(key);
         if(propertyValue == null){
-            throw new NoPropertyFoundException("No property found for key : "+key);
+            throw new NoPropertyFoundException(key);
         }
         return propertyValue;
     }
