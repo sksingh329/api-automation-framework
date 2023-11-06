@@ -4,18 +4,22 @@ import io.restassured.http.Headers;
 import io.restassured.response.Response;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import qa.app.gorest.flows.GoRestCreateUser;
 import qa.app.gorest.flows.GoRestResponseSpec;
 import qa.app.gorest.pojo.UserPOJO;
 import qa.core.api.restclient.Request;
 import qa.core.api.restclient.ResponseBodyParser;
+import qa.core.reports.ReporterUtils;
+import qa.core.reports.TestNGListener;
 import qa.core.utils.RandomEmailGenerator;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
+@Listeners(TestNGListener.class)
 public class UsersWithRestClientTest extends BaseTest{
     private Request request;
 
@@ -28,6 +32,9 @@ public class UsersWithRestClientTest extends BaseTest{
     @Test
     public void listAllUsersTest(){
         Response response = request.createRequest().get();
+
+        String responseString = response.asPrettyString();
+        ReporterUtils.log(ReporterUtils.Level.INFO,"Response",responseString);
 
         response.then().spec(GoRestResponseSpec.getResponseSpec());
 
