@@ -9,7 +9,8 @@ import org.testng.annotations.Test;
 import qa.app.gorest.flows.GoRestCreateUser;
 import qa.app.gorest.flows.GoRestResponseSpec;
 import qa.app.gorest.pojo.UserPOJO;
-import qa.core.api.restclient.Request;
+import qa.core.Asserts.Asserts;
+import qa.core.api.restclient.RequestParam;
 import qa.core.api.restclient.ResponseBodyParser;
 import qa.core.reports.ReporterUtils;
 import qa.core.reports.TestNGListener;
@@ -21,11 +22,11 @@ import java.util.Locale;
 
 @Listeners(TestNGListener.class)
 public class UsersWithRestClientTest extends BaseTest{
-    private Request request;
+    private RequestParam request;
 
     @BeforeMethod
     public void setup(){
-        request = new Request(properties.getProperty("baseUri"),properties.getProperty("usersBasePath"));
+        request = new RequestParam(properties.getProperty("baseUri"),properties.getProperty("usersBasePath"));
         request.setRequestHeaders("Authorization","Bearer "+properties.getProperty("apiKey"));
     }
 
@@ -33,17 +34,14 @@ public class UsersWithRestClientTest extends BaseTest{
     public void listAllUsersTest(){
         Response response = request.createRequest().get();
 
-        String responseString = response.asPrettyString();
-        ReporterUtils.log(ReporterUtils.Level.INFO,"Response",responseString);
-
         response.then().spec(GoRestResponseSpec.getResponseSpec());
 
         //Validate headers
-        Assert.assertEquals(response.getHeader("x-pagination-page"),"1");
-        Assert.assertTrue(response.headers().hasHeaderWithName("x-pagination-page"));
-        Assert.assertTrue(response.headers().hasHeaderWithName("x-pagination-limit"));
-        Assert.assertTrue(response.headers().hasHeaderWithName("x-pagination-total"));
-        Assert.assertTrue(response.headers().hasHeaderWithName("x-pagination-pages"));
+        Asserts.assertEquals(response.getHeader("x-pagination-page"),"1","Validate Response Header - x-pagination-page");
+        Asserts.assertTrue(response.headers().hasHeaderWithName("x-pagination-page"),"Validate header x-pagination-page exist");
+        Asserts.assertTrue(response.headers().hasHeaderWithName("x-pagination-limit"),"Validate header x-pagination-limit exist");
+        Asserts.assertTrue(response.headers().hasHeaderWithName("x-pagination-total"),"Validate header x-pagination-total exist");
+        Asserts.assertTrue(response.headers().hasHeaderWithName("x-pagination-pages"),"Validate header x-pagination-total exist");
 
         ResponseBodyParser responseBodyParser = new ResponseBodyParser(response);
 
@@ -54,19 +52,19 @@ public class UsersWithRestClientTest extends BaseTest{
         int userCount = responseBodyParser.getList("$").size();
 
         if(paginationTotal > 10){
-            Assert.assertEquals(userCount,paginationLimit);
+            Asserts.assertEquals(userCount,paginationLimit,"Validate userCount is same as paginationLimit when total user count is greater than 10");
         }
         else{
-            Assert.assertEquals(userCount,paginationTotal);
+            Asserts.assertEquals(userCount,paginationTotal,"Validate userCount is same as paginationTotal when total user count is less than 10");
         }
 
         //Validate user has fields
         responseBodyParser.setRootPath("[0].");
-        Assert.assertTrue(responseBodyParser.get("id").toString().length() > 0);
-        Assert.assertTrue(responseBodyParser.get("name").toString().length() > 0);
-        Assert.assertTrue(responseBodyParser.get("email").toString().length() > 0);
-        Assert.assertTrue(responseBodyParser.get("gender").toString().length() > 0);
-        Assert.assertTrue(responseBodyParser.get("status").toString().length() > 0);
+        Asserts.assertTrue(responseBodyParser.get("id").toString().length() > 0,"Validate response body has id field");
+        Asserts.assertTrue(responseBodyParser.get("name").toString().length() > 0,"Validate response body has name field");
+        Asserts.assertTrue(responseBodyParser.get("email").toString().length() > 0,"Validate response body has email field");
+        Asserts.assertTrue(responseBodyParser.get("gender").toString().length() > 0,"Validate response body has gender field");
+        Asserts.assertTrue(responseBodyParser.get("status").toString().length() > 0,"Validate response body has status");
     }
 
     @Test

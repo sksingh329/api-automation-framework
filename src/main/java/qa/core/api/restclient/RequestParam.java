@@ -2,11 +2,12 @@ package qa.core.api.restclient;
 
 import io.restassured.RestAssured;
 import io.restassured.specification.RequestSpecification;
+import qa.core.reports.ReportLevel;
 import qa.core.reports.ReporterUtils;
 
 import java.util.HashMap;
 
-public class Request {
+public class RequestParam {
     private final String baseUri;
     private final String basePath;
     private final RequestSpecification requestSpec;
@@ -15,7 +16,7 @@ public class Request {
     private HashMap<String,String> requestHeaders;
     private Object requestBody;
 
-    public Request(String baseUri,String basePath){
+    public RequestParam(String baseUri, String basePath){
         this.baseUri = baseUri;
         this.basePath = basePath;
         requestSpec = RestAssured.given();
@@ -47,26 +48,27 @@ public class Request {
         }
     }
 
-    public RequestSpecification createRequest(){
-        ReporterUtils.log(ReporterUtils.Level.INFO,"Request Base URI",baseUri);
-        ReporterUtils.log(ReporterUtils.Level.INFO,"Request base Path",basePath);
+    public RequestSender createRequest(){
+        ReporterUtils.log(ReportLevel.INFO,"Request Base URI",baseUri);
+        ReporterUtils.log(ReportLevel.INFO,"Request base Path",basePath);
 
         if(pathParams != null){
             requestSpec.pathParams(pathParams);
-            ReporterUtils.log(ReporterUtils.Level.INFO,"Request path params",pathParams.toString());
+            ReporterUtils.log(ReportLevel.INFO,"Request path params",pathParams.toString());
         }
         if(queryParams != null){
             requestSpec.queryParams(queryParams);
-            ReporterUtils.log(ReporterUtils.Level.INFO,"Request query params",queryParams.toString());
+            ReporterUtils.log(ReportLevel.INFO,"Request query params",queryParams.toString());
         }
         if(requestHeaders != null){
             requestSpec.headers(requestHeaders);
-            ReporterUtils.log(ReporterUtils.Level.INFO,"Request Headers",requestHeaders.toString());
+            ReporterUtils.log(ReportLevel.INFO,"Request Headers",requestHeaders.toString());
         }
         if(requestBody != null){
             requestSpec.body(requestBody);
-            ReporterUtils.log(ReporterUtils.Level.INFO,"Request payload",requestBody.toString());
+            ReporterUtils.log(ReportLevel.INFO,"Request payload",requestBody.toString());
         }
-        return requestSpec;
+
+        return new RequestSender(requestSpec);
     }
 }
