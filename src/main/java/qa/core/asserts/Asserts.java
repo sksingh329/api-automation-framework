@@ -1,4 +1,4 @@
-package qa.core.Asserts;
+package qa.core.asserts;
 
 import org.testng.Assert;
 import qa.core.exceptions.AssertionError;
@@ -16,8 +16,8 @@ public class Asserts {
     }
     public static void assertContains(String actual, String expected, String message){
         try{
-            Assert.assertTrue(expected.contains(actual));
-            ReporterUtils.log(ReportLevel.PASS,message,"Assertion Passed : " + actual + " ~= " +expected);
+            Assert.assertTrue(actual.contains(expected));
+            ReporterUtils.log(ReportLevel.PASS,message,"Assertion Passed : " + actual + " <contains> " +expected);
         } catch(AssertionError ex){
             throw new AssertionError(actual,expected,message,ex.toString());
         }
