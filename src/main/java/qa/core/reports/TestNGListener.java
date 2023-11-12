@@ -4,19 +4,17 @@ import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
 import org.testng.Reporter;
+import qa.core.utils.FrameworkProperties;
 import qa.core.utils.Timestamp;
 
 import java.util.List;
 
 public class TestNGListener implements ITestListener {
     Report report;
+
     @Override
     public void onStart(ITestContext context){
-        String reportDir = "reports";
-        String reportFilePrefix = "report_";
-        String currentTimestamp = Timestamp.getCurrentTimeStamp();
-        String reportFileName = reportFilePrefix+currentTimestamp;
-        report = new TextReport(reportDir,reportFileName);
+        report = GetReport.getReport();
         report.log(ReportLevel.INFO,"Test Started : " + context.getName());
     }
 

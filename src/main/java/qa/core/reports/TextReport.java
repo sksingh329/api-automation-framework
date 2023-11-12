@@ -31,7 +31,7 @@ public class TextReport extends Report{
         saveLogsToFile();
     }
     private void saveLogsToFile() {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(new File(textReportFileName)))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(textReportFileName))) {
             writer.write(logBuffer.toString());
         } catch (IOException e) {
             e.printStackTrace();
