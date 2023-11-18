@@ -6,7 +6,6 @@ import org.testng.annotations.Parameters;
 import qa.core.utils.PropertiesUtils;
 
 import java.io.InputStream;
-import java.util.Properties;
 
 public class BaseTest {
     protected PropertiesUtils properties;

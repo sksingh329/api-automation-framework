@@ -1,5 +1,8 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="GoRestSuite">
+    <listeners>
+        <listener class-name="qa.core.reports.TestNGListener" />
+    </listeners>
     <test name="UsersTest">
         <parameter name="appName" value="gorest" />
         <parameter name="envName" value="qa" />
