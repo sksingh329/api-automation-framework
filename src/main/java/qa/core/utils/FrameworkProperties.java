@@ -1,7 +1,6 @@
 package qa.core.utils;
 
 import java.io.InputStream;
-import java.util.Properties;
 
 public class FrameworkProperties {
     private static final String FRAMEWORK_PROP = "framework.properties";

@@ -13,4 +13,7 @@ public class ConsoleReport extends Report{
     public void save(){
         // This is an empty method as console report is not needed to be saved.
     }
+    public void testStart(String testMethodName){
+        System.out.println(ReportLevel.INFO + " : " + "Test method " + testMethodName + " started.");
+    }
 }
