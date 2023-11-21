@@ -23,13 +23,13 @@ import java.util.Locale;
 public class UsersWithRestClientTest extends BaseTest{
     private RequestParam request;
 
-    @BeforeMethod
+    @BeforeMethod (alwaysRun = true)
     public void setup(){
         request = new RequestParam(properties.getProperty("baseUri"),properties.getProperty("usersBasePath"));
         request.setRequestHeaders("Authorization","Bearer "+properties.getProperty("apiKey"));
     }
 
-    @Test
+    @Test(groups = {"smoke"} )
     public void listAllUsersTest(){
         Response response = request.createRequest().get();
 
@@ -66,7 +66,7 @@ public class UsersWithRestClientTest extends BaseTest{
         Asserts.assertTrue(responseBodyParser.get("status").toString().length() > 0,"Validate response body has status");
     }
 
-    @Test
+    @Test(groups = {"smoke"} )
     public void filterUserWithNameTest(){
         String searchName = "kumar";
         request.setQueryParams("name",searchName);
@@ -105,7 +105,7 @@ public class UsersWithRestClientTest extends BaseTest{
 
     }
 
-    @Test
+    @Test(groups = {"regression"} )
     public void createUserTest() {
         String name = "Test User";
         String email = RandomEmailGenerator.generateRandomEmail();

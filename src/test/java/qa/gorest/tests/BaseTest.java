@@ -11,7 +11,7 @@ public class BaseTest {
     protected PropertiesUtils properties;
 
     @Parameters({"appName","envName"})
-    @BeforeTest
+    @BeforeTest (alwaysRun = true)
     public void testSetup(@Optional("defaultAppName") String appName,@Optional("defaultEnvName") String envName){
 
         if ("defaultAppName".equals(appName) && "defaultEnvName".equals(envName)) {
