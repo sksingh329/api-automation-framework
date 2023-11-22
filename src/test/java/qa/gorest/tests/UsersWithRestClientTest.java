@@ -12,7 +12,7 @@ import qa.app.gorest.pojo.UserPOJO;
 import qa.core.asserts.Asserts;
 import qa.core.api.restclient.RequestParam;
 import qa.core.api.restclient.ResponseBodyParser;
-import qa.core.reports.TestNGListener;
+import qa.core.report.TestNGListener;
 import qa.core.utils.RandomEmailGenerator;
 
 import java.util.Arrays;

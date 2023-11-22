@@ -2,8 +2,8 @@ package qa.core.asserts;
 
 import org.testng.Assert;
 import qa.core.exceptions.CustomAssertionError;
-import qa.core.reports.ReportLevel;
-import qa.core.reports.ReporterUtils;
+import qa.core.report.ReportLevel;
+import qa.core.report.ReporterUtils;
 
 public class Asserts {
     public static <T> void assertEquals(T actual, T expected, String message){

@@ -1,4 +1,4 @@
-package qa.core.reports;
+package qa.core.report;
 
 public class ConsoleReport extends Report{
     public ConsoleReport(){
