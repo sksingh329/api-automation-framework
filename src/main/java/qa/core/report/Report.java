@@ -1,4 +1,4 @@
-package qa.core.reports;
+package qa.core.report;
 
 public abstract class Report {
     public abstract void log(ReportLevel level,String step,String detail);

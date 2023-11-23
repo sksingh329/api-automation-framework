@@ -1,4 +1,4 @@
-package qa.core.reports;
+package qa.core.report;
 
 import org.testng.ITestContext;
 import org.testng.ITestListener;

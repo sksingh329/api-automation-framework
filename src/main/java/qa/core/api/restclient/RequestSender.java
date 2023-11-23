@@ -4,8 +4,8 @@ import io.restassured.http.Headers;
 import io.restassured.http.Header;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
-import qa.core.reports.ReportLevel;
-import qa.core.reports.ReporterUtils;
+import qa.core.report.ReportLevel;
+import qa.core.report.ReporterUtils;
 
 public class RequestSender {
     private RequestSpecification requestSpec;

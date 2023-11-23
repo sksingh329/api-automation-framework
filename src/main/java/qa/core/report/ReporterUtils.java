@@ -1,4 +1,4 @@
-package qa.core.reports;
+package qa.core.report;
 
 import org.testng.Reporter;
 import qa.core.utils.FrameworkProperties;

@@ -1,11 +1,13 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="GoRestSuite">
     <listeners>
-        <listener class-name="qa.core.reports.TestNGListener" />
+        <listener class-name="qa.core.report.TestNGListener" />
     </listeners>
+
+    <parameter name="appName" value="gorest" />
+    <parameter name="envName" value="qa" />
+
     <test name="UsersRegressionTest">
-        <parameter name="appName" value="gorest" />
-        <parameter name="envName" value="qa" />
         <groups>
             <run>
                 <include name="regression"/>

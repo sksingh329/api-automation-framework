@@ -2,8 +2,8 @@ package qa.core.api.restclient;
 
 import io.restassured.RestAssured;
 import io.restassured.specification.RequestSpecification;
-import qa.core.reports.ReportLevel;
-import qa.core.reports.ReporterUtils;
+import qa.core.report.ReportLevel;
+import qa.core.report.ReporterUtils;
 
 import java.util.HashMap;
 

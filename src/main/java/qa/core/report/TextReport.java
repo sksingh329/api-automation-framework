@@ -1,4 +1,4 @@
-package qa.core.reports;
+package qa.core.report;
 
 import qa.core.utils.FileUtils;
 import qa.core.utils.FrameworkProperties;
