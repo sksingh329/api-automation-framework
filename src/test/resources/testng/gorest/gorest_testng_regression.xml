@@ -1,0 +1,20 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="GoRestSuite">
+    <listeners>
+        <listener class-name="qa.core.report.TestNGListener" />
+    </listeners>
+
+    <parameter name="appName" value="gorest" />
+    <parameter name="envName" value="qa" />
+
+    <test name="UsersRegressionTest">
+        <groups>
+            <run>
+                <include name="regression"/>
+            </run>
+        </groups>
+        <classes>
+            <class name="qa.gorest.tests.UsersWithRestClientTest" />
+        </classes>
+    </test>
+</suite>
