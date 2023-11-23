@@ -29,7 +29,7 @@ public class UsersWithRestClientTest extends BaseTest{
         request.setRequestHeaders("Authorization","Bearer "+properties.getProperty("apiKey"));
     }
 
-    @Test(groups = {"smoke"} )
+    @Test(groups = {"smoke","regression"} )
     public void listAllUsersTest(){
         Response response = request.createRequest().get();
 
@@ -66,7 +66,7 @@ public class UsersWithRestClientTest extends BaseTest{
         Asserts.assertTrue(responseBodyParser.get("status").toString().length() > 0,"Validate response body has status");
     }
 
-    @Test(groups = {"smoke"} )
+    @Test(groups = {"regression"} )
     public void filterUserWithNameTest(){
         String searchName = "kumar";
         request.setQueryParams("name",searchName);
@@ -137,7 +137,7 @@ public class UsersWithRestClientTest extends BaseTest{
         Assert.assertFalse(responseHeaders.hasHeaderWithName("x-pagination-pages"));
     }
 
-    @Test
+    @Test(groups = {"regression"} )
     public void getUserTest(){
         String name = "Test User";
         String email = RandomEmailGenerator.generateRandomEmail();
@@ -170,7 +170,7 @@ public class UsersWithRestClientTest extends BaseTest{
         Assert.assertFalse(responseHeaders.hasHeaderWithName("x-pagination-total"));
         Assert.assertFalse(responseHeaders.hasHeaderWithName("x-pagination-pages"));
     }
-    @Test
+    @Test(groups = {"regression"} )
     public void updateUserTest() {
         String name = "Test User";
         String email = RandomEmailGenerator.generateRandomEmail();
@@ -209,7 +209,7 @@ public class UsersWithRestClientTest extends BaseTest{
         Assert.assertFalse(responseHeaders.hasHeaderWithName("x-pagination-pages"));
     }
 
-    @Test
+    @Test(groups = {"regression"} )
     public void deleteUserTest() {
         String name = "Test User";
         String email = RandomEmailGenerator.generateRandomEmail();
