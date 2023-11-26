@@ -7,7 +7,6 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import qa.app.gorest.flows.GoRestCreateUser;
-import qa.app.gorest.flows.GoRestResponseSpec;
 import qa.app.gorest.pojo.UserPOJO;
 import qa.core.asserts.Asserts;
 import qa.core.api.restclient.RequestParam;
@@ -33,9 +32,11 @@ public class UsersWithRestClientTest extends BaseTest{
     public void listAllUsersTest(){
         Response response = request.createRequest().get();
 
-        response.then().spec(GoRestResponseSpec.getResponseSpec());
+        //Validate status code
+        Asserts.assertEquals(response.statusCode(),200,"Validate status code");
 
         //Validate headers
+        Asserts.assertEquals(response.getHeader("Content-Type"),"application/json; charset=utf-8","Validate Content-Type");
         Asserts.assertEquals(response.getHeader("x-pagination-page"),"1","Validate Response Header - x-pagination-page");
         Asserts.assertTrue(response.headers().hasHeaderWithName("x-pagination-page"),"Validate header x-pagination-page exist");
         Asserts.assertTrue(response.headers().hasHeaderWithName("x-pagination-limit"),"Validate header x-pagination-limit exist");
@@ -73,9 +74,11 @@ public class UsersWithRestClientTest extends BaseTest{
         request.setQueryParams("gender","male");
         Response response = request.createRequest().get();
 
-        response.then().spec(GoRestResponseSpec.getResponseSpec());
+        //Validate status code
+        Asserts.assertEquals(response.statusCode(),200,"Validate status code");
 
         //Validate headers
+        Asserts.assertEquals(response.getHeader("Content-Type"),"application/json; charset=utf-8","Validate Content-Type");
         Asserts.assertEquals(response.getHeader("x-pagination-page"),"1","Validate Response Header - x-pagination-page");
         Asserts.assertTrue(response.headers().hasHeaderWithName("x-pagination-page"),"Validate header x-pagination-page exist");
         Asserts.assertTrue(response.headers().hasHeaderWithName("x-pagination-limit"),"Validate header x-pagination-limit exist");
@@ -114,7 +117,9 @@ public class UsersWithRestClientTest extends BaseTest{
 
         Response createUserResponse = GoRestCreateUser.createUser(properties,name,email,gender,status);
 
-        createUserResponse.then().spec(GoRestResponseSpec.postResponseSpec());
+        //Validate status code
+        Asserts.assertEquals(createUserResponse.statusCode(),201,"Validate status code");
+
 
         String resourceURI = createUserResponse.header("location");
 
@@ -123,18 +128,18 @@ public class UsersWithRestClientTest extends BaseTest{
 
         ResponseBodyParser responseBodyParser = new ResponseBodyParser(createUserResponse);
 
-        Assert.assertEquals(responseBodyParser.get("id").toString(),userId);
-        Assert.assertEquals(responseBodyParser.get("name"),name);
-        Assert.assertEquals(responseBodyParser.get("email"),email);
-        Assert.assertEquals(responseBodyParser.get("gender"),gender);
-        Assert.assertEquals(responseBodyParser.get("status"),status);
+        Asserts.assertEquals(responseBodyParser.get("id").toString(),userId,"Validate id");
+        Asserts.assertEquals(responseBodyParser.get("name"),name,"Validate name");
+        Asserts.assertEquals(responseBodyParser.get("email"),email,"Validate email");
+        Asserts.assertEquals(responseBodyParser.get("gender"),gender,"Validate gender");
+        Asserts.assertEquals(responseBodyParser.get("status"),status,"Validate status");
 
         // Validate Headers are not present
         Headers responseHeaders = createUserResponse.headers();
-        Assert.assertFalse(responseHeaders.hasHeaderWithName("x-pagination-page"));
-        Assert.assertFalse(responseHeaders.hasHeaderWithName("x-pagination-limit"));
-        Assert.assertFalse(responseHeaders.hasHeaderWithName("x-pagination-total"));
-        Assert.assertFalse(responseHeaders.hasHeaderWithName("x-pagination-pages"));
+        Asserts.assertFalse(responseHeaders.hasHeaderWithName("x-pagination-page"),"Validate header x-pagination-page is not present");
+        Asserts.assertFalse(responseHeaders.hasHeaderWithName("x-pagination-limit"),"Validate header x-pagination-limit is not present");
+        Asserts.assertFalse(responseHeaders.hasHeaderWithName("x-pagination-total"),"Validate header x-pagination-total is not present");
+        Asserts.assertFalse(responseHeaders.hasHeaderWithName("x-pagination-pages"),"Validate header x-pagination-pages is not present");
     }
 
     @Test(groups = {"regression"} )
@@ -146,6 +151,8 @@ public class UsersWithRestClientTest extends BaseTest{
 
         Response createUserResponse = GoRestCreateUser.createUser(properties,name,email,gender,status);
 
+        Asserts.assertEquals(createUserResponse.statusCode(),201,"Validate Status Code");
+
         ResponseBodyParser responseBodyParser = new ResponseBodyParser(createUserResponse);
         String responseUserId = responseBodyParser.get("id").toString();
 
@@ -153,22 +160,23 @@ public class UsersWithRestClientTest extends BaseTest{
 
         Response getUserResponse = request.createRequest().get("{id}");
 
-        getUserResponse.then().spec(GoRestResponseSpec.getResponseSpec());
+        //Validate status code
+        Asserts.assertEquals(getUserResponse.statusCode(),200,"Validate status code");
 
         responseBodyParser = new ResponseBodyParser(getUserResponse);
 
-        Assert.assertEquals(responseBodyParser.get("id").toString(),responseUserId);
-        Assert.assertEquals(responseBodyParser.get("name"),name);
-        Assert.assertEquals(responseBodyParser.get("email"),email);
-        Assert.assertEquals(responseBodyParser.get("gender"),gender);
-        Assert.assertEquals(responseBodyParser.get("status"),status);
+        Asserts.assertEquals(responseBodyParser.get("id").toString(),responseUserId,"Validate id");
+        Asserts.assertEquals(responseBodyParser.get("name"),name,"Validate name");
+        Asserts.assertEquals(responseBodyParser.get("email"),email,"Validate email");
+        Asserts.assertEquals(responseBodyParser.get("gender"),gender,"Validate gender");
+        Asserts.assertEquals(responseBodyParser.get("status"),status,"Validate status");
 
         // Validate Headers are not present
         Headers responseHeaders = createUserResponse.headers();
-        Assert.assertFalse(responseHeaders.hasHeaderWithName("x-pagination-page"));
-        Assert.assertFalse(responseHeaders.hasHeaderWithName("x-pagination-limit"));
-        Assert.assertFalse(responseHeaders.hasHeaderWithName("x-pagination-total"));
-        Assert.assertFalse(responseHeaders.hasHeaderWithName("x-pagination-pages"));
+        Asserts.assertFalse(responseHeaders.hasHeaderWithName("x-pagination-page"),"Validate header x-pagination-page is not present");
+        Asserts.assertFalse(responseHeaders.hasHeaderWithName("x-pagination-limit"),"Validate header x-pagination-limit is not present");
+        Asserts.assertFalse(responseHeaders.hasHeaderWithName("x-pagination-total"),"Validate header x-pagination-total is not present");
+        Asserts.assertFalse(responseHeaders.hasHeaderWithName("x-pagination-pages"),"Validate header x-pagination-pages is not present");
     }
     @Test(groups = {"regression"} )
     public void updateUserTest() {
@@ -178,6 +186,8 @@ public class UsersWithRestClientTest extends BaseTest{
         String status = "active";
 
         Response createUserResponse = GoRestCreateUser.createUser(properties,name, email, gender, status);
+
+        Asserts.assertEquals(createUserResponse.statusCode(),201,"Validate Status Code");
 
         ResponseBodyParser responseBodyParser = new ResponseBodyParser(createUserResponse);
         String responseUserId = responseBodyParser.get("id").toString();
@@ -191,22 +201,24 @@ public class UsersWithRestClientTest extends BaseTest{
         request.setRequestBody(updatedUser);
 
         Response updateUserResponse = request.createRequest().put("{id}");
-        updateUserResponse.then().spec(GoRestResponseSpec.getResponseSpec());
+
+        //Validate status code
+        Asserts.assertEquals(updateUserResponse.statusCode(),200,"Validate status code");
 
         responseBodyParser = new ResponseBodyParser(updateUserResponse);
 
-        Assert.assertEquals(responseBodyParser.get("id").toString(),responseUserId);
-        Assert.assertEquals(responseBodyParser.get("name"),name);
-        Assert.assertEquals(responseBodyParser.get("email"),email);
-        Assert.assertEquals(responseBodyParser.get("gender"),gender);
-        Assert.assertEquals(responseBodyParser.get("status"),status);
+        Asserts.assertEquals(responseBodyParser.get("id").toString(),responseUserId,"Validate id");
+        Asserts.assertEquals(responseBodyParser.get("name"),name,"Validate name");
+        Asserts.assertEquals(responseBodyParser.get("email"),email,"Validate email");
+        Asserts.assertEquals(responseBodyParser.get("gender"),gender,"Validate gender");
+        Asserts.assertEquals(responseBodyParser.get("status"),status,"Validate status");
 
         // Validate Headers are not present
         Headers responseHeaders = createUserResponse.headers();
-        Assert.assertFalse(responseHeaders.hasHeaderWithName("x-pagination-page"));
-        Assert.assertFalse(responseHeaders.hasHeaderWithName("x-pagination-limit"));
-        Assert.assertFalse(responseHeaders.hasHeaderWithName("x-pagination-total"));
-        Assert.assertFalse(responseHeaders.hasHeaderWithName("x-pagination-pages"));
+        Asserts.assertFalse(responseHeaders.hasHeaderWithName("x-pagination-page"),"Validate header x-pagination-page is not present");
+        Asserts.assertFalse(responseHeaders.hasHeaderWithName("x-pagination-limit"),"Validate header x-pagination-limit is not present");
+        Asserts.assertFalse(responseHeaders.hasHeaderWithName("x-pagination-total"),"Validate header x-pagination-total is not present");
+        Asserts.assertFalse(responseHeaders.hasHeaderWithName("x-pagination-pages"),"Validate header x-pagination-pages is not present");
     }
 
     @Test(groups = {"regression"} )
@@ -218,22 +230,26 @@ public class UsersWithRestClientTest extends BaseTest{
 
         Response createUserResponse = GoRestCreateUser.createUser(properties,name, email, gender, status);
 
+        Asserts.assertEquals(createUserResponse.statusCode(),201,"Validate Status Code");
+
         ResponseBodyParser responseBodyParser = new ResponseBodyParser(createUserResponse);
         String responseUserId = responseBodyParser.get("id").toString();
 
         request.setPathParams("id", String.valueOf(responseUserId));
 
         Response deleteUserResponse = request.createRequest().delete("{id}");
-        deleteUserResponse.then().spec(GoRestResponseSpec.deleteResponseSpec());
 
-        Assert.assertEquals(deleteUserResponse.statusCode(),204);
+        //Validate status code
+        Asserts.assertEquals(deleteUserResponse.statusCode(),204,"Validate status code");
 
         // Validate Headers
         Headers responseHeaders = createUserResponse.headers();
         Assert.assertEquals(responseHeaders.getValue("Content-Type"),"application/json; charset=utf-8");
-        Assert.assertFalse(responseHeaders.hasHeaderWithName("x-pagination-page"));
-        Assert.assertFalse(responseHeaders.hasHeaderWithName("x-pagination-limit"));
-        Assert.assertFalse(responseHeaders.hasHeaderWithName("x-pagination-total"));
-        Assert.assertFalse(responseHeaders.hasHeaderWithName("x-pagination-pages"));
+
+        // Validate Headers are not present
+        Asserts.assertFalse(responseHeaders.hasHeaderWithName("x-pagination-page"),"Validate header x-pagination-page is not present");
+        Asserts.assertFalse(responseHeaders.hasHeaderWithName("x-pagination-limit"),"Validate header x-pagination-limit is not present");
+        Asserts.assertFalse(responseHeaders.hasHeaderWithName("x-pagination-total"),"Validate header x-pagination-total is not present");
+        Asserts.assertFalse(responseHeaders.hasHeaderWithName("x-pagination-pages"),"Validate header x-pagination-pages is not present");
     }
 }
