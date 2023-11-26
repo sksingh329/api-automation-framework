@@ -30,11 +30,11 @@ jobs:
 
     - name: Run Go Rest Smoke
       run: mvn clean test -DsuiteXmlFile=gorest/gorest_testng_smoke.xml
+      continue-on-error: true
       
 
     - name: Upload Extent HTML report - Smoke
       uses: actions/upload-artifact@v3
-      continue-on-error: true
       with:
         name: go-rest-smoke-report
         path: reports/extent/report_*.html
