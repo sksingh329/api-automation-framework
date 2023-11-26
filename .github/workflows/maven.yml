@@ -27,11 +27,23 @@ jobs:
         java-version: '11'
         distribution: 'temurin'
         cache: maven
-    - name: Build with Maven
-      run: mvn clean test -DsuiteXmlFile=gorest/gorest_testng_regression.xml
 
-    - name: Upload Extent HTML report
+    - name: Run Go Rest Smoke
+      run: mvn clean test -DsuiteXmlFile=gorest/gorest_testng_smoke.xml
+      
+
+    - name: Upload Extent HTML report - Smoke
       uses: actions/upload-artifact@v3
       with:
-        name: extent-report
+        name: go-rest-smoke-report
+        path: reports/extent/report_*.html
+        
+    - name: Run Go Rest Regression
+      run: mvn clean test -DsuiteXmlFile=gorest/gorest_testng_regression.xml
+      
+
+    - name: Upload Extent HTML report - Regression
+      uses: actions/upload-artifact@v3
+      with:
+        name: go-rest-regression-report
         path: reports/extent/report_*.html
