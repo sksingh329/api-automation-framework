@@ -33,7 +33,7 @@ public class UsersWithRestClientTest extends BaseTest{
         Response response = request.createRequest().get();
 
         //Validate status code
-        Asserts.assertEquals(response.statusCode(),200,"Validate status code");
+        Asserts.assertEquals(response.statusCode(),201,"Validate status code");
 
         //Validate headers
         Asserts.assertEquals(response.getHeader("Content-Type"),"application/json; charset=utf-8","Validate Content-Type");
