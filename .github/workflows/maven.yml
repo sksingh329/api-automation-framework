@@ -37,8 +37,8 @@ jobs:
       
 
     - name: Upload Extent HTML report
-      continue-on-error: true
       uses: actions/upload-artifact@v3
+      if: always()
       with:
         name: go-rest-report
         path: reports/extent/report_*.html
