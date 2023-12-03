@@ -34,6 +34,9 @@ jobs:
         
     - name: Run Go Rest Regression
       run: mvn clean test -DsuiteXmlFile=gorest/gorest_testng_regression.xml
+
+    - name: Run Go Rest Data Driven test
+      run: mvn clean test -DsuiteXmlFile=gorest/gorest_testng_data_driven.xml  
       
 
     - name: Upload Extent HTML report
