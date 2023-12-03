@@ -3,16 +3,14 @@ package qa.gorest.tests;
 import io.restassured.http.Headers;
 import io.restassured.response.Response;
 import org.testng.Assert;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import qa.app.gorest.flows.GoRestCreateUser;
 import qa.app.gorest.pojo.UserPOJO;
 import qa.core.asserts.Asserts;
-import qa.core.api.restclient.RequestParam;
 import qa.core.api.restclient.ResponseBodyParser;
 import qa.core.report.TestNGListener;
-import qa.core.utils.RandomEmailGenerator;
+import qa.core.utils.helper.RandomEmailGenerator;
 
 import java.util.Arrays;
 import java.util.List;
@@ -20,13 +18,6 @@ import java.util.Locale;
 
 @Listeners(TestNGListener.class)
 public class UsersWithRestClientTest extends BaseTest{
-    private RequestParam request;
-
-    @BeforeMethod (alwaysRun = true)
-    public void setup(){
-        request = new RequestParam(properties.getProperty("baseUri"),properties.getProperty("usersBasePath"));
-        request.setRequestHeaders("Authorization","Bearer "+properties.getProperty("apiKey"));
-    }
 
     @Test(groups = {"smoke","regression"} )
     public void listAllUsersTest(){

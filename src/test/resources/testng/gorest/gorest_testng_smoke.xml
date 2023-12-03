@@ -4,7 +4,6 @@
         <listener class-name="qa.core.report.TestNGListener" />
     </listeners>
     <test name="UsersSmokeTest">
-        <parameter name="appName" value="gorest" />
         <parameter name="envName" value="qa" />
         <groups>
             <run>

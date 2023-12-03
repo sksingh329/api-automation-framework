@@ -4,8 +4,8 @@ import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.Status;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
-import qa.core.utils.FileUtils;
-import qa.core.utils.FrameworkProperties;
+import qa.core.utils.files.FileUtils;
+import qa.core.utils.properties.FrameworkProperties;
 
 
 public class ExtentReport extends Report{

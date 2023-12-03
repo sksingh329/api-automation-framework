@@ -3,7 +3,7 @@ package qa.app.gorest.flows;
 import io.restassured.response.Response;
 import qa.app.gorest.pojo.UserPOJO;
 import qa.core.api.restclient.RequestParam;
-import qa.core.utils.PropertiesUtils;
+import qa.core.utils.properties.PropertiesUtils;
 
 public class GoRestCreateUser {
     public static Response createUser(PropertiesUtils properties, String name, String email, String gender, String status){

@@ -1,4 +1,4 @@
-package qa.core.utils;
+package qa.core.utils.properties;
 
 import qa.core.exceptions.NoPropertyFoundException;
 

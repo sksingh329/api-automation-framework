@@ -4,7 +4,7 @@ import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
 import org.testng.Reporter;
-import qa.core.utils.FrameworkProperties;
+import qa.core.utils.properties.FrameworkProperties;
 
 import java.util.List;
 
