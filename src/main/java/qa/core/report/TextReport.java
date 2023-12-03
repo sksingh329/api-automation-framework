@@ -1,7 +1,7 @@
 package qa.core.report;
 
-import qa.core.utils.FileUtils;
-import qa.core.utils.FrameworkProperties;
+import qa.core.utils.files.FileUtils;
+import qa.core.utils.properties.FrameworkProperties;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;

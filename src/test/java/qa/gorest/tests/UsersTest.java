@@ -8,7 +8,7 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import qa.app.gorest.pojo.UserPOJO;
-import qa.core.utils.RandomEmailGenerator;
+import qa.core.utils.helper.RandomEmailGenerator;
 
 import java.util.Arrays;
 import java.util.List;

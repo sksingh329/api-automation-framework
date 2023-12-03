@@ -4,7 +4,6 @@
         <listener class-name="qa.core.report.TestNGListener" />
     </listeners>
 
-    <parameter name="appName" value="gorest" />
     <parameter name="envName" value="qa" />
 
     <test name="UsersRegressionTest">

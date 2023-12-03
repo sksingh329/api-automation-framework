@@ -1,4 +1,4 @@
-package qa.core.utils;
+package qa.core.utils.helper;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

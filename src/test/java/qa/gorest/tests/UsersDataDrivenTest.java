@@ -9,29 +9,31 @@ import qa.app.gorest.flows.GoRestCreateUser;
 import qa.core.api.restclient.ResponseBodyParser;
 import qa.core.asserts.Asserts;
 import qa.core.report.TestNGListener;
-import qa.core.utils.CSVDataReader;
-import qa.core.utils.RandomEmailGenerator;
+import qa.core.utils.properties.FrameworkProperties;
+import qa.core.utils.helper.RandomEmailGenerator;
+import qa.core.utils.testdata.ReadTestData;
 
-import java.io.File;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Listeners(TestNGListener.class)
 public class UsersDataDrivenTest extends BaseTest{
 
     @DataProvider(name = "create_user_test_data")
     public Object[][] createUserDataProvider() {
-        File file = new File(Objects.requireNonNull(getClass().getClassLoader().getResource("test_data/gorest/create_user_test_data.csv")).getFile());
-        return CSVDataReader.readCSV(file.getAbsolutePath());
+
+        String testDataDirName = FrameworkProperties.getFrameworkProperties().getProperty("testDataDirName");
+        String createUserTestDataFileName = properties.getProperty("createUserTestData");
+        String createUserTestDataFilePath = testDataDirName + appName + "/" + createUserTestDataFileName;
+
+        return ReadTestData.readTestData(createUserTestDataFilePath);
     }
 
     @Test(groups = {"data-driven"},dataProvider = "create_user_test_data")
-    public void createUserTest(String firstName, String lastName, String gender, String status) {
-        String name = firstName + " " + lastName;
+    public void createUserTest(HashMap<String, String> testData) {
+        String name = testData.get("first_name") + " " + testData.get("last_name");
         String email = RandomEmailGenerator.generateRandomEmail();
 
-        Response createUserResponse = GoRestCreateUser.createUser(properties,name,email,gender,status);
+        Response createUserResponse = GoRestCreateUser.createUser(properties,name,email,testData.get("gender"),testData.get("status"));
 
         //Validate status code
         Asserts.assertEquals(createUserResponse.statusCode(),201,"Validate status code");
@@ -47,8 +49,8 @@ public class UsersDataDrivenTest extends BaseTest{
         Asserts.assertEquals(responseBodyParser.get("id").toString(),userId,"Validate id");
         Asserts.assertEquals(responseBodyParser.get("name"),name,"Validate name");
         Asserts.assertEquals(responseBodyParser.get("email"),email,"Validate email");
-        Asserts.assertEquals(responseBodyParser.get("gender"),gender,"Validate gender");
-        Asserts.assertEquals(responseBodyParser.get("status"),status,"Validate status");
+        Asserts.assertEquals(responseBodyParser.get("gender"),testData.get("gender"),"Validate gender");
+        Asserts.assertEquals(responseBodyParser.get("status"),testData.get("status"),"Validate status");
 
         // Validate Headers are not present
         Headers responseHeaders = createUserResponse.headers();
