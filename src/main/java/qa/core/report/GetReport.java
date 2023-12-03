@@ -1,7 +1,7 @@
 package qa.core.report;
 
-import qa.core.utils.FrameworkProperties;
-import qa.core.utils.Timestamp;
+import qa.core.utils.properties.FrameworkProperties;
+import qa.core.utils.helper.Timestamp;
 
 public class GetReport {
     public GetReport(){

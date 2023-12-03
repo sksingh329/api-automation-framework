@@ -1,0 +1,14 @@
+[
+  {
+    "first_name": "Test",
+    "last_name": "User",
+    "gender": "male",
+    "status": "active"
+  },
+  {
+    "first_name": "Test1",
+    "last_name": "User1",
+    "gender": "female",
+    "status": "inactive"
+  }
+]

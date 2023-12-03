@@ -1,7 +1,7 @@
 package qa.core.report;
 
 import org.testng.Reporter;
-import qa.core.utils.FrameworkProperties;
+import qa.core.utils.properties.FrameworkProperties;
 
 public class ReporterUtils {
     private static final String reportLogSplit = FrameworkProperties.getFrameworkProperties().getProperty("reportLogSplit");
