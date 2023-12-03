@@ -1,0 +1,19 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="GoRestSuite">
+    <listeners>
+        <listener class-name="qa.core.report.TestNGListener" />
+    </listeners>
+
+    <parameter name="envName" value="qa" />
+
+    <test name="UsersDataDrivenTest">
+        <groups>
+            <run>
+                <include name="data-driven"/>
+            </run>
+        </groups>
+        <classes>
+            <class name="qa.gorest.tests.UsersDataDrivenTest" />
+        </classes>
+    </test>
+</suite>
