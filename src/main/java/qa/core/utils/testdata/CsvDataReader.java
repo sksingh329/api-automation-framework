@@ -12,7 +12,7 @@ import java.util.List;
 
 public class CsvDataReader {
     private CsvDataReader(){}
-    public static List<HashMap<String, String>> readCSV(String filePath) {
+    public static List<HashMap<String, String>> readCsv(String filePath) {
         List<HashMap<String,String>> result = new ArrayList<>();
 
         try (CSVReader reader = new CSVReader(new FileReader(filePath))){
