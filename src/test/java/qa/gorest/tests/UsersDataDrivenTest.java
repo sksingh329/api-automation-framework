@@ -21,9 +21,10 @@ public class UsersDataDrivenTest extends BaseTest{
     @DataProvider(name = "create_user_test_data")
     public Object[][] createUserDataProvider() {
 
+        String testDirName = FrameworkProperties.getFrameworkProperties().getProperty("testDir");
         String testDataDirName = FrameworkProperties.getFrameworkProperties().getProperty("testDataDirName");
         String createUserTestDataFileName = properties.getProperty("createUserTestData");
-        String createUserTestDataFilePath = testDataDirName + appName + "/" + createUserTestDataFileName;
+        String createUserTestDataFilePath = testDirName + testDataDirName + appName + "/" + createUserTestDataFileName;
 
         return ReadTestData.readTestData(createUserTestDataFilePath);
     }
