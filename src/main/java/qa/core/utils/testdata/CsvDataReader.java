@@ -12,10 +12,10 @@ import java.util.List;
 
 public class CsvDataReader {
     private CsvDataReader(){}
-    public static List<HashMap<String, String>> readCsv(String filePath) {
+    public static List<HashMap<String, String>> readCsv(FileReader filePath) {
         List<HashMap<String,String>> result = new ArrayList<>();
 
-        try (CSVReader reader = new CSVReader(new FileReader(filePath))){
+        try (CSVReader reader = new CSVReader(new FileReader(String.valueOf(filePath)))){
             List<String[]> data = reader.readAll();
 
             for (int rowIndex = 1; rowIndex < data.size(); rowIndex++) {
