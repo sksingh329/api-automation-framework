@@ -3,8 +3,8 @@
     <listeners>
         <listener class-name="qa.core.report.TestNGListener" />
     </listeners>
+    <parameter name="envName" value="qa" />
     <test name="UsersSmokeTest">
-        <parameter name="envName" value="qa" />
         <groups>
             <run>
                 <include name="smoke"/>

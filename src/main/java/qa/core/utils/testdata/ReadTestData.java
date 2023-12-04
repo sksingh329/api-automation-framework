@@ -4,6 +4,7 @@ import qa.core.exceptions.FrameworkException;
 import qa.core.utils.files.FileUtils;
 
 import java.io.File;
+import java.io.FileReader;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
@@ -12,7 +13,7 @@ public class ReadTestData {
     private ReadTestData(){}
 
     public static Object[][] readTestData(String testDataFilePath){
-        File testDataFile = FileUtils.getFile(testDataFilePath);
+
         List<HashMap<String,String>> result;
 
         // Find the last occurrence of '.'
@@ -24,9 +25,11 @@ public class ReadTestData {
 
         switch (Objects.requireNonNull(fileType)){
             case "csv":
-                result = CsvDataReader.readCsv(testDataFile.getAbsolutePath());
+                FileReader testDataFileReader = FileUtils.getFileReader(testDataFilePath);
+                result = CsvDataReader.readCsv(testDataFileReader);
                 break;
             case "json":
+                File testDataFile = FileUtils.getFile(testDataFilePath);
                 result = JsonDataReader.readJson(testDataFile);
                 break;
             default:

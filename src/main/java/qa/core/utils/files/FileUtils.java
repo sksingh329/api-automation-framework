@@ -4,6 +4,8 @@ import qa.core.exceptions.FrameworkException;
 import qa.core.utils.properties.FrameworkProperties;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
@@ -14,12 +16,22 @@ public class FileUtils {
             directory.mkdirs();  // Creates the directory and its parent directories if they don't exist
         }
     }
-    public static File getFile(String filePath){
+    public static FileReader getFileReader(String filePath){
+        String absoluteFilePath = System.getProperty("user.dir") + filePath;
         try{
-            return new File(System.getProperty("user.dir") + FrameworkProperties.getFrameworkProperties().getProperty("testDir") + filePath);
+            return new FileReader(absoluteFilePath);
+        }
+        catch (NullPointerException | FileNotFoundException ex){
+            throw new FrameworkException("File not found - " + absoluteFilePath + " Trace : " + ex);
+        }
+    }
+    public static File getFile(String filePath){
+        String absoluteFilePath = System.getProperty("user.dir") + filePath;
+        try{
+            return new File(absoluteFilePath);
         }
         catch (NullPointerException ex){
-            throw new FrameworkException("File not found - " + filePath + " Trace : " + ex);
+            throw new FrameworkException("File not found - " + absoluteFilePath + " Trace : " + ex);
         }
     }
     public static String readJsonStringFromFile(File filePath){
