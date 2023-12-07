@@ -1,5 +1,5 @@
 package qa.core.report;
 
 public enum ReportLevel {
-    INFO,PASS,FAIL,ERROR
+    INFO,PASS,FAIL,ERROR,SKIP
 }
