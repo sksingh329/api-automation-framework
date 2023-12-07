@@ -1,5 +1,5 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="GoRestSuite">
+<suite name="GoRestSuite" parallel="methods" thread-count="2">
     <listeners>
         <listener class-name="qa.core.report.TestNGListener" />
     </listeners>

@@ -4,9 +4,7 @@ import qa.core.utils.properties.FrameworkProperties;
 import qa.core.utils.helper.Timestamp;
 
 public class GetReport {
-    public GetReport(){
-
-    }
+    private GetReport(){}
     private static Report report;
 
     private static void loadReport(){
