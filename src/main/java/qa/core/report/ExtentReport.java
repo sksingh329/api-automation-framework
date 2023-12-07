@@ -10,10 +10,12 @@ import qa.core.utils.properties.FrameworkProperties;
 
 public class ExtentReport extends Report{
 
-    public static ExtentReport report;
+    private static ExtentReport report;
 
     private static ExtentReports extentReports;
-    private static ExtentTest extentTest;
+    private static final ThreadLocal<ExtentTest> test = new ThreadLocal<ExtentTest>();
+
+    private ExtentReport() {}
 
     private static void setExtentReports(String reportDir, String reportFileName){
         String extentReportSubDir = FrameworkProperties.getFrameworkProperties().getProperty("extentReportSubDir");
@@ -26,9 +28,7 @@ public class ExtentReport extends Report{
         extentReports.attachReporter(reporter);
         extentReports.setSystemInfo("System", "MAC");
         extentReports.setSystemInfo("Author", "Subodh");
-        extentReports.setSystemInfo("Build#", "1.1");
         extentReports.setSystemInfo("Team", "QA Team");
-        extentReports.setSystemInfo("Customer Name", "NAL");
     }
 
     public static ExtentReport getInstance(String reportDir, String reportFileName){
@@ -39,22 +39,20 @@ public class ExtentReport extends Report{
         return report;
     }
 
-    private ExtentReport() {
-
-    }
-
-
     public void testStart(String testMethodName){
-        extentTest = extentReports.createTest(testMethodName);
+        ExtentTest extentTest = extentReports.createTest(testMethodName);
+        test.set(extentTest);
     }
 
-    public void log(ReportLevel level,String step,String detail){
-        extentTest.log(Status.valueOf(level.toString()),step + detail);
+    public void log(String testMethodName,ReportLevel level,String step,String detail){
+        String message = testMethodName + " : " + step + " : " +detail;
+        test.get().log(Status.valueOf(level.toString()),message);
     }
-    public void log(ReportLevel level,String message){
-        extentTest.log(Status.valueOf(level.toString()),message);
+    public void log(String testMethodName,ReportLevel level,String message){
+        test.get().log(Status.valueOf(level.toString()),testMethodName + " : " + message);
     }
     public void save(){
         extentReports.flush();
+        test.remove();
     }
 }

@@ -1,5 +1,6 @@
 package qa.core.report;
 
+import com.aventstack.extentreports.ExtentTest;
 import qa.core.utils.files.FileUtils;
 import qa.core.utils.properties.FrameworkProperties;
 
@@ -18,13 +19,13 @@ public class TextReport extends Report{
         textReportFileName =  textReportDir + reportFileName + ".txt";
         logBuffer = new StringBuilder();
     }
-    public void log(ReportLevel level,String step,String detail){
+    public void log(String testMethodName,ReportLevel level,String step,String detail){
         String message = step + " : " + detail;
-        String logEntry = String.format("%s: %s%n", level, message);
+        String logEntry = String.format("%s : %s : %s%n", testMethodName,level, message);
         logBuffer.append(logEntry);
     }
-    public void log(ReportLevel level,String message){
-        String logEntry = String.format("%s: %s%n", level, message);
+    public void log(String testMethodName,ReportLevel level,String message){
+        String logEntry = String.format("%s : %s : %s%n", testMethodName,level, message);
         logBuffer.append(logEntry);
     }
     public void save(){
