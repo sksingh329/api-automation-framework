@@ -11,7 +11,6 @@ public class GoRestCreateUser {
         request = new RequestParam(properties.getProperty("baseUri"),properties.getProperty("usersBasePath"));
         request.setRequestHeaders("Authorization","Bearer "+properties.getProperty("apiKey"));
 
-
         UserPOJO user = new UserPOJO(name, email, gender, status);
         request.setRequestHeaders("Content-Type","application/json");
         request.setRequestHeaders("Authorization","Bearer "+properties.getProperty("apiKey"));

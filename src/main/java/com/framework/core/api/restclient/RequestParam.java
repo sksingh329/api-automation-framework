@@ -6,15 +6,21 @@ import com.framework.core.report.ReportLevel;
 import com.framework.core.report.ReporterUtils;
 
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Locale;
+import java.util.Map;
 
 public class RequestParam {
     private final String baseUri;
     private final String basePath;
     private final RequestSpecification requestSpec;
-    private HashMap<String,String> queryParams;
+    private HashMap<String,Object> queryParams;
     private HashMap<String,String> pathParams;
     private HashMap<String,String> requestHeaders;
     private Object requestBody;
+    private String requestCookie;
+    private RequestSpecification authRequestSpec;
+    private Map<String,String> formParams;
 
     public RequestParam(String baseUri, String basePath){
         this.baseUri = baseUri;
@@ -24,7 +30,7 @@ public class RequestParam {
         requestSpec.basePath(basePath);
     }
 
-    public void setQueryParams(String queryKey, String queryValue){
+    public <T> void setQueryParams(String queryKey, T queryValue){
         if(queryParams == null){
             queryParams = new HashMap<>();
         }
@@ -47,6 +53,35 @@ public class RequestParam {
             this.requestBody = requestBody;
         }
     }
+    public void setRequestCookie(String cookie){
+        if(this.requestCookie == null){
+            this.requestCookie = cookie;
+        }
+    }
+    public RequestSpecification setRequestAuth(String authType,String userName,String password){
+        RequestAuth requestAuth = new RequestAuth(requestSpec);
+        authRequestSpec = null;
+        switch (authType.toLowerCase(Locale.ROOT)){
+            case "basic":
+                authRequestSpec = requestAuth.basicAuth(userName,password);
+                break;
+            case "preemptive":
+                authRequestSpec = requestAuth.preemptiveAuth(userName,password);
+                break;
+            case "digest":
+                authRequestSpec = requestAuth.digestAuth(userName,password);
+                break;
+            default:
+                //Replace with exception throw
+                System.out.println("Not valid auth type");
+        }
+        return authRequestSpec;
+    }
+    public void setFormParams(Map<String,String> formParams){
+        if(this.formParams == null){
+            this.formParams = formParams;
+        }
+    }
 
     public RequestSender createRequest(){
         ReporterUtils.log(ReportLevel.INFO,"Request Base URI",baseUri);
@@ -67,6 +102,18 @@ public class RequestParam {
         if(requestBody != null){
             requestSpec.body(requestBody);
             ReporterUtils.log(ReportLevel.INFO,"Request payload",requestBody.toString());
+        }
+        if(requestCookie != null){
+            requestSpec.cookie(requestCookie);
+            ReporterUtils.log(ReportLevel.INFO,"Request cookie",requestCookie);
+        }
+        if(authRequestSpec != null){
+            requestSpec.spec(authRequestSpec);
+        }
+        if(formParams != null){
+            for(Map.Entry<String, String> entry : formParams.entrySet()){
+                requestSpec.formParam(entry.getKey(),entry.getValue());
+            }
         }
 
         return new RequestSender(requestSpec);

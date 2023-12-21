@@ -21,7 +21,7 @@ public class BaseTest {
     public void testSetup(@Optional("defaultEnvName") String envName){
         String envDirName = FrameworkProperties.getFrameworkProperties().getProperty("testEnvDirName");
         if ("defaultEnvName".equals(envName)) {
-            envName = "com";
+            envName = "qa";
         }
 
         FileReader envFileReader = FileUtils.getFileReader(FrameworkProperties.getFrameworkProperties().getProperty("testDir") + envDirName + appName + "." +envName+".properties");
