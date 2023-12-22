@@ -6,7 +6,7 @@ import io.restassured.response.Response;
 import java.util.List;
 
 public class ResponseBodyParser {
-    private JsonPath jsonPath;
+    private final JsonPath jsonPath;
 
     public ResponseBodyParser(Response response){
         jsonPath = response.jsonPath();
