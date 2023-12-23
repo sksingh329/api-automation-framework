@@ -1,10 +1,10 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="GoRestSuite">
     <listeners>
-        <listener class-name="qa.core.report.TestNGListener" />
+        <listener class-name="com.framework.core.report.TestNGListener" />
     </listeners>
 
-    <parameter name="envName" value="qa" />
+    <parameter name="envName" value="com" />
 
     <test name="UsersDataDrivenTest">
         <groups>
@@ -13,7 +13,7 @@
             </run>
         </groups>
         <classes>
-            <class name="qa.gorest.tests.UsersDataDrivenTest" />
+            <class name="com.gorest.tests.UsersDataDrivenTest" />
         </classes>
     </test>
 </suite>

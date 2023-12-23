@@ -1,7 +1,7 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="GoRestSuite" parallel="methods" thread-count="1">
     <listeners>
-        <listener class-name="qa.core.report.TestNGListener" />
+        <listener class-name="com.framework.core.report.TestNGListener" />
     </listeners>
 
     <parameter name="envName" value="qa" />
@@ -13,7 +13,7 @@
             </run>
         </groups>
         <classes>
-            <class name="qa.gorest.tests.UsersWithRestClientTest" />
+            <class name="com.gorest.tests.UsersWithRestClientTest" />
         </classes>
     </test>
 </suite>

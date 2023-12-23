@@ -1,0 +1,75 @@
+{
+  "type": "array",
+  "default": [],
+  "title": "Root Schema",
+  "items": {
+    "type": "object",
+    "default": {},
+    "title": "A Schema",
+    "required": [
+      "id",
+      "name",
+      "sex",
+      "date_of_birth",
+      "age"
+    ],
+    "properties": {
+      "id": {
+        "type": "integer",
+        "default": 0,
+        "title": "The id Schema",
+        "examples": [
+          12271095
+        ]
+      },
+      "name": {
+        "type": "string",
+        "default": "",
+        "title": "The name Schema",
+        "examples": [
+          "Bert"
+        ]
+      },
+      "sex": {
+        "type": "string",
+        "default": "",
+        "title": "The sex Schema",
+        "examples": [
+          "M"
+        ]
+      },
+      "date_of_birth": {
+        "type": "string",
+        "default": "",
+        "title": "The date_of_birth Schema",
+        "examples": [
+          "2010-06-27"
+        ]
+      },
+      "age": {
+        "type": "integer",
+        "default": 0,
+        "title": "The age Schema",
+        "examples": [
+          13
+        ]
+      }
+    },
+    "examples": [{
+      "id": 12271095,
+      "name": "Bert",
+      "sex": "M",
+      "date_of_birth": "2010-06-27",
+      "age": 13
+    }]
+  },
+  "examples": [
+    [{
+      "id": 12271095,
+      "name": "Bert",
+      "sex": "M",
+      "date_of_birth": "2010-06-27",
+      "age": 13
+    }]
+  ]
+}
