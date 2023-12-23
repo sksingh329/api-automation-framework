@@ -1,17 +1,11 @@
 package com.k6.tests;
 
 import com.framework.core.api.restclient.RequestParam;
-import com.framework.core.api.restclient.ResponseBodyParser;
 import com.framework.core.api.restclient.ResponseSchemaValidator;
 import com.framework.core.report.TestNGListener;
-import com.framework.core.utils.files.FileUtils;
-import com.practice.auth.app.CrocodilesCredPOJO;
-import io.restassured.module.jsv.JsonSchemaValidator;
 import io.restassured.response.Response;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
-
-import java.io.File;
 
 @Listeners(TestNGListener.class)
 public class CrocodilesTest extends BaseTest{

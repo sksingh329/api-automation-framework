@@ -7,6 +7,9 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class FileUtils {
     public static void createDir(String dirName){
@@ -36,6 +39,14 @@ public class FileUtils {
     public static String readJsonStringFromFile(File filePath){
         try{
             return org.apache.commons.io.FileUtils.readFileToString(filePath, StandardCharsets.UTF_8);
+        }
+        catch (IOException ex){
+            throw new FrameworkException("Error while reading content from file " + ex);
+        }
+    }
+    public static String readStringFromFile(Path filePath) {
+        try{
+            return Files.readString(filePath);
         }
         catch (IOException ex){
             throw new FrameworkException("Error while reading content from file " + ex);
