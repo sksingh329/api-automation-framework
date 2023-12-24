@@ -3,7 +3,7 @@
     <listeners>
         <listener class-name="com.framework.core.report.TestNGListener" />
     </listeners>
-    <parameter name="envName" value="com" />
+    <parameter name="envName" value="qa" />
     <test name="UsersSmokeTest">
         <groups>
             <run>
