@@ -2,6 +2,7 @@ package com.practice.auth.tests;
 
 import com.framework.core.api.restclient.RequestParam;
 import com.framework.core.api.restclient.ResponseBodyParser;
+import com.framework.core.api.restclient.ResponseFetcher;
 import com.framework.core.asserts.Asserts;
 import com.framework.core.report.TestNGListener;
 import io.restassured.response.Response;
@@ -25,9 +26,9 @@ public class WeatherAuthApiKeyTest {
         request.setQueryParams("aqi","no");
         request.setQueryParams("Key","1d791fbc051e4476b7a144221232106");
 
-        Response weatherDetailsResponse = request.createRequest().get();
+        ResponseFetcher weatherDetailsResponse = request.createRequest().get();
 
-        ResponseBodyParser responseBodyParser = new ResponseBodyParser(weatherDetailsResponse);
+        ResponseBodyParser responseBodyParser = weatherDetailsResponse.getResponseBodyParser();
 
         Asserts.assertEquals(responseBodyParser.get("location.name").toString(),cityName,"Validate city name");
     }
@@ -38,9 +39,9 @@ public class WeatherAuthApiKeyTest {
         request.setQueryParams("aqi","no");
         request.setRequestHeaders("Key","1d791fbc051e4476b7a144221232106");
 
-        Response weatherDetailsResponse = request.createRequest().get();
+        ResponseFetcher weatherDetailsResponse = request.createRequest().get();
 
-        ResponseBodyParser responseBodyParser = new ResponseBodyParser(weatherDetailsResponse);
+        ResponseBodyParser responseBodyParser = weatherDetailsResponse.getResponseBodyParser();
 
         Asserts.assertEquals(responseBodyParser.get("location.name").toString(),cityName,"Validate city name");
     }

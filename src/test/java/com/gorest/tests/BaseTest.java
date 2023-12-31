@@ -1,5 +1,7 @@
 package com.gorest.tests;
 
+import com.framework.core.report.ReportLevel;
+import com.framework.core.report.ReporterUtils;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Optional;
@@ -20,10 +22,12 @@ public class BaseTest {
     @BeforeTest (alwaysRun = true)
     public void testSetup(@Optional("defaultEnvName") String envName){
         String envDirName = FrameworkProperties.getFrameworkProperties().getProperty("testEnvDirName");
+
         if ("defaultEnvName".equals(envName)) {
             envName = "qa";
         }
 
+        ReporterUtils.log(ReportLevel.INFO,"Env Name",envName);
         FileReader envFileReader = FileUtils.getFileReader(FrameworkProperties.getFrameworkProperties().getProperty("testDir") + envDirName + appName + "." +envName+".properties");
         properties = new PropertiesUtils(envFileReader);
     }

@@ -1,6 +1,7 @@
 package com.k6.tests;
 
 import com.framework.core.api.restclient.RequestParam;
+import com.framework.core.api.restclient.ResponseFetcher;
 import com.practice.auth.app.CrocodilesCredPOJO;
 import io.restassured.response.Response;
 import org.testng.annotations.BeforeTest;
@@ -16,8 +17,8 @@ public class BaseTest {
         createSessionCookieRequest.setRequestHeaders("Content-Type", "application/json");
         createSessionCookieRequest.setRequestBody(crocodilesCredPOJO);
 
-        Response response = createSessionCookieRequest.createRequest().post();
+        ResponseFetcher response = createSessionCookieRequest.createRequest().post();
 
-        sessionId = response.cookie("sessionid");
+        sessionId = response.getResponseCookie("sessionid");
     }
 }
