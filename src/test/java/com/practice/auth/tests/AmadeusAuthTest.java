@@ -2,9 +2,9 @@ package com.practice.auth.tests;
 
 import com.framework.core.api.restclient.RequestParam;
 import com.framework.core.api.restclient.ResponseBodyParser;
+import com.framework.core.api.restclient.ResponseFetcher;
 import com.framework.core.asserts.Asserts;
 import com.framework.core.report.TestNGListener;
-import io.restassured.response.Response;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
@@ -28,8 +28,8 @@ public class AmadeusAuthTest {
         RequestParam accessTokenRequestParam = new RequestParam(baseUri,"/security/oauth2/token");
         accessTokenRequestParam.setFormParams(formParams);
 
-        Response response= accessTokenRequestParam.createRequest().post();
-        ResponseBodyParser responseBodyParser = new ResponseBodyParser(response);
+        ResponseFetcher response= accessTokenRequestParam.createRequest().post();
+        ResponseBodyParser responseBodyParser = response.getResponseBodyParser();
         accessToken = responseBodyParser.get("access_token");
     }
     @Test
@@ -44,10 +44,10 @@ public class AmadeusAuthTest {
 
         request.setRequestHeaders("Authorization","Bearer "+accessToken);
 
-        Response response = request.createRequest().get();
-        Asserts.assertEquals(response.statusCode(),200,"Validate status code");
+        ResponseFetcher response = request.createRequest().get();
+        Asserts.assertEquals(response.getStatusCode(),200,"Validate status code");
 
-        ResponseBodyParser responseBodyParser = new ResponseBodyParser(response);
+        ResponseBodyParser responseBodyParser = response.getResponseBodyParser();
         //Validate origin and price range
         int dataSize = responseBodyParser.getList("data").size();
 

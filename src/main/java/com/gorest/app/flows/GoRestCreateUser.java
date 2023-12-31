@@ -1,12 +1,12 @@
 package com.gorest.app.flows;
 
-import io.restassured.response.Response;
+import com.framework.core.api.restclient.ResponseFetcher;
 import com.gorest.app.pojo.UserPOJO;
 import com.framework.core.api.restclient.RequestParam;
 import com.framework.core.utils.properties.PropertiesUtils;
 
 public class GoRestCreateUser {
-    public static Response createUser(PropertiesUtils properties, String name, String email, String gender, String status){
+    public static ResponseFetcher createUser(PropertiesUtils properties, String name, String email, String gender, String status){
         RequestParam request;
         request = new RequestParam(properties.getProperty("baseUri"),properties.getProperty("usersBasePath"));
         request.setRequestHeaders("Authorization","Bearer "+properties.getProperty("apiKey"));

@@ -12,65 +12,65 @@ public class RequestSender {
     public RequestSender(RequestSpecification requestSpec){
         this.requestSpec = requestSpec;
     }
-    public Response get(){
+    public ResponseFetcher get(){
         ReporterUtils.log(ReportLevel.INFO,"Request Method","GET");
         Response response = requestSpec.get();
         logResponse(response);
-        return response;
+        return new ResponseFetcher(response);
     }
-    public Response get(String path){
+    public ResponseFetcher get(String path){
         ReporterUtils.log(ReportLevel.INFO,"Request Method","GET - " + path);
         Response response = requestSpec.get(path);
         logResponse(response);
-        return response;
+        return new ResponseFetcher(response);
     }
-    public Response post(){
+    public ResponseFetcher post(){
         ReporterUtils.log(ReportLevel.INFO,"Request Method","POST");
         Response response = requestSpec.post();
         logResponse(response);
-        return response;
+        return new ResponseFetcher(response);
     }
-    public Response post(String path){
+    public ResponseFetcher post(String path){
         ReporterUtils.log(ReportLevel.INFO,"Request Method","POST - " + path);
         Response response = requestSpec.post(path);
         logResponse(response);
-        return response;
+        return new ResponseFetcher(response);
     }
-    public Response put(){
+    public ResponseFetcher put(){
         ReporterUtils.log(ReportLevel.INFO,"Request Method","PUT");
         Response response = requestSpec.put();
         logResponse(response);
-        return response;
+        return new ResponseFetcher(response);
     }
-    public Response put(String path){
+    public ResponseFetcher put(String path){
         ReporterUtils.log(ReportLevel.INFO,"Request Method","PUT - " + path);
         Response response = requestSpec.put(path);
         logResponse(response);
-        return response;
+        return new ResponseFetcher(response);
     }
-    public Response patch(){
+    public ResponseFetcher patch(){
         ReporterUtils.log(ReportLevel.INFO,"Request Method","PATCH");
         Response response = requestSpec.patch();
         logResponse(response);
-        return response;
+        return new ResponseFetcher(response);
     }
-    public Response patch(String path){
+    public ResponseFetcher patch(String path){
         ReporterUtils.log(ReportLevel.INFO,"Request Method","PATCH - " +path);
         Response response = requestSpec.patch(path);
         logResponse(response);
-        return response;
+        return new ResponseFetcher(response);
     }
-    public Response delete(){
+    public ResponseFetcher delete(){
         ReporterUtils.log(ReportLevel.INFO,"Request Method","DELETE");
         Response response = requestSpec.delete();
         logResponse(response);
-        return response;
+        return new ResponseFetcher(response);
     }
-    public Response delete(String path){
+    public ResponseFetcher delete(String path){
         ReporterUtils.log(ReportLevel.INFO,"Request Method","DELETE - " + path);
         Response response = requestSpec.delete(path);
         logResponse(response);
-        return response;
+        return new ResponseFetcher(response);
     }
     private void logResponse(Response response){
         ReporterUtils.log(ReportLevel.INFO, "Response Status Line",response.statusLine());

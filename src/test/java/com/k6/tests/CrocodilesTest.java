@@ -1,6 +1,7 @@
 package com.k6.tests;
 
 import com.framework.core.api.restclient.RequestParam;
+import com.framework.core.api.restclient.ResponseFetcher;
 import com.framework.core.api.restclient.ResponseSchemaValidator;
 import com.framework.core.report.TestNGListener;
 import io.restassured.response.Response;
@@ -17,7 +18,7 @@ public class CrocodilesTest extends BaseTest{
         request = new RequestParam(baseUri,"/my/crocodiles/");
 
         request.setRequestHeaders("Cookie","sessionid="+sessionId);
-        Response response = request.createRequest().get();
+        ResponseFetcher response = request.createRequest().get();
 
         ResponseSchemaValidator.validateSchema(response,"k6/MyCrocodilesSchema.json");
     }

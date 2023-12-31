@@ -1,6 +1,7 @@
 package com.practice.auth.tests;
 
 import com.framework.core.api.restclient.RequestParam;
+import com.framework.core.api.restclient.ResponseFetcher;
 import com.framework.core.asserts.Asserts;
 import com.framework.core.report.TestNGListener;
 import io.restassured.response.Response;
@@ -22,24 +23,24 @@ public class InternetHerokuBasicAuth {
     @Test
     public void basicAuthTest(){
         request.setRequestAuth("basic","admin","admin");
-        Response response = request.createRequest().get();
-        String responseBody = response.then().extract().body().asString();
+        ResponseFetcher response = request.createRequest().get();
+        String responseBody = response.getResponse().then().extract().body().asString();
 
         Asserts.assertTrue(responseBody.contains("Congratulations! You must have the proper credentials."),"Validate authentication is successful");
     }
     @Test
     public void preemptiveAuthTest(){
         request.setRequestAuth("preemptive","admin","admin");
-        Response response = request.createRequest().get();
-        String responseBody = response.then().extract().body().asString();
+        ResponseFetcher response = request.createRequest().get();
+        String responseBody = response.getResponse().then().extract().body().asString();
 
         Asserts.assertTrue(responseBody.contains("Congratulations! You must have the proper credentials."),"Validate authentication is successful");
     }
     @Test
     public void digestAuthTest(){
         request.setRequestAuth("digest","admin","admin");
-        Response response = request.createRequest().get();
-        String responseBody = response.then().extract().body().asString();
+        ResponseFetcher response = request.createRequest().get();
+        String responseBody = response.getResponse().then().extract().body().asString();
 
         Asserts.assertTrue(responseBody.contains("Congratulations! You must have the proper credentials."),"Validate authentication is successful");
     }
