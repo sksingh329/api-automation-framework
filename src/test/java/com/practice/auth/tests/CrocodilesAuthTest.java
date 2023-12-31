@@ -2,6 +2,7 @@ package com.practice.auth.tests;
 
 import com.framework.core.api.restclient.RequestParam;
 import com.framework.core.api.restclient.ResponseBodyParser;
+import com.framework.core.api.restclient.ResponseFetcher;
 import com.framework.core.report.TestNGListener;
 import com.practice.auth.app.CrocodilesCredPOJO;
 import io.restassured.response.Response;
@@ -22,9 +23,9 @@ public class CrocodilesAuthTest {
         createSessionCookieRequest.setRequestHeaders("Content-Type", "application/json");
         createSessionCookieRequest.setRequestBody(crocodilesCredPOJO);
 
-        Response response = createSessionCookieRequest.createRequest().post();
+        ResponseFetcher response = createSessionCookieRequest.createRequest().post();
 
-        sessionId = response.cookie("sessionid");
+        sessionId = response.getResponseCookie("sessionid");
 
         System.out.println(sessionId);
 
@@ -32,7 +33,7 @@ public class CrocodilesAuthTest {
 
         request.setRequestHeaders("Cookie","sessionid="+sessionId);
         response = request.createRequest().get();
-        System.out.println(response.prettyPrint());
+        System.out.println(response.getResponseBody());
     }
     @Test
     public void getCrocodileUsingJwt(){
@@ -41,15 +42,15 @@ public class CrocodilesAuthTest {
         createSessionCookieRequest.setRequestHeaders("Content-Type", "application/json");
         createSessionCookieRequest.setRequestBody(crocodilesCredPOJO);
 
-        Response tokenResponse = createSessionCookieRequest.createRequest().post();
+        ResponseFetcher tokenResponse = createSessionCookieRequest.createRequest().post();
 
-        ResponseBodyParser responseBodyParser = new ResponseBodyParser(tokenResponse);
+        ResponseBodyParser responseBodyParser = tokenResponse.getResponseBodyParser();
         String accessToken = responseBodyParser.get("access").toString();
 
         request = new RequestParam(baseUri,"/my/crocodiles/");
 
         request.setRequestHeaders("Authorization","Bearer "+accessToken);
-        Response response = request.createRequest().get();
-        System.out.println(response.prettyPrint());
+        ResponseFetcher response = request.createRequest().get();
+        System.out.println(response.getResponseBody());
     }
 }
