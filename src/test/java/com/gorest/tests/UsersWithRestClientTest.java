@@ -4,7 +4,6 @@ import com.framework.core.api.constants.HttpStatusCode;
 import com.framework.core.api.restclient.ResponseFetcher;
 import com.gorest.app.flows.GoRestValidation;
 import io.restassured.http.Headers;
-import io.restassured.response.Response;
 import org.testng.Assert;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
@@ -87,7 +86,6 @@ public class UsersWithRestClientTest extends BaseTest{
         for (String username: userNamesList) {
             Asserts.assertContains(username.toLowerCase(Locale.ROOT),searchName.toLowerCase(Locale.ROOT),"Validate user name contains "+searchName);
         }
-
     }
 
     @Test(groups = {"regression"} )

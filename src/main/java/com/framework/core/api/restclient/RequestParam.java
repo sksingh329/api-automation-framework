@@ -5,8 +5,8 @@ import io.restassured.specification.RequestSpecification;
 import com.framework.core.report.ReportLevel;
 import com.framework.core.report.ReporterUtils;
 
+import java.io.File;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Locale;
 import java.util.Map;
 
@@ -18,9 +18,12 @@ public class RequestParam {
     private HashMap<String,String> pathParams;
     private HashMap<String,String> requestHeaders;
     private Object requestBody;
+    private File requestBodyFile;
     private String requestCookie;
     private RequestSpecification authRequestSpec;
     private Map<String,String> formParams;
+    private RequestBodyMultipartFormData requestBodyMultipartFormData;
+
 
     public RequestParam(String baseUri, String basePath){
         this.baseUri = baseUri;
@@ -51,6 +54,16 @@ public class RequestParam {
     public void setRequestBody(Object requestBody){
         if(this.requestBody == null){
             this.requestBody = requestBody;
+        }
+    }
+    public void setRequestBodyFile(File file){
+        if(this.requestBodyFile == null){
+            this.requestBodyFile = file;
+        }
+    }
+    public void setRequestBodyMultipartFormData(RequestBodyMultipartFormData requestBodyMultipartFormData){
+        if(this.requestBodyMultipartFormData == null){
+            this.requestBodyMultipartFormData = requestBodyMultipartFormData;
         }
     }
     public void setRequestCookie(String cookie){
@@ -102,6 +115,26 @@ public class RequestParam {
         if(requestBody != null){
             requestSpec.body(requestBody);
             ReporterUtils.log(ReportLevel.INFO,"Request payload",requestBody.toString());
+        }
+        if(requestBodyFile != null){
+            requestSpec.body(requestBodyFile);
+            ReporterUtils.log(ReportLevel.INFO,"Request payload",requestBodyFile.toString());
+        }
+        if(requestBodyMultipartFormData != null){
+            //Add logger for multipart form-data
+            Map<String,String> textFormData = requestBodyMultipartFormData.getTextFormData();
+            Map<String, File> fileFormData = requestBodyMultipartFormData.getFileFormData();
+
+            if(textFormData != null){
+                for(Map.Entry<String, String> entry : textFormData.entrySet()){
+                    requestSpec.multiPart(entry.getKey(),entry.getValue());
+                }
+            }
+            if(fileFormData != null){
+                for(Map.Entry<String, File> entry : fileFormData.entrySet()){
+                    requestSpec.multiPart(entry.getKey(),entry.getValue());
+                }
+            }
         }
         if(requestCookie != null){
             requestSpec.cookie(requestCookie);

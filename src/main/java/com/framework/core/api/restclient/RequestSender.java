@@ -79,6 +79,8 @@ public class RequestSender {
             ReporterUtils.log(ReportLevel.INFO,"Response Headers", header.getName() + " : " + header.getValue());
         }
         if (!response.getBody().asString().isEmpty()){
+            ReporterUtils.log(ReportLevel.INFO,"Response Body", "Below is response");
+            System.out.println(response.asPrettyString());
             ReporterUtils.log(ReportLevel.INFO,"Response Body", response.asPrettyString());
         }
         else{
