@@ -10,7 +10,7 @@ import org.testng.annotations.Test;
 import com.gorest.app.flows.GoRestCreateUser;
 import com.gorest.app.pojo.UserPOJO;
 import com.framework.core.asserts.Asserts;
-import com.framework.core.api.restclient.ResponseBodyParser;
+import com.framework.core.api.restclient.JsonParser;
 import com.framework.core.report.TestNGListener;
 import com.framework.core.utils.helper.RandomEmailGenerator;
 
@@ -32,7 +32,7 @@ public class UsersWithRestClientTest extends BaseTest{
         GoRestValidation.validateConTentType(response);
         GoRestValidation.validatePaginationHeaders(response);
 
-        ResponseBodyParser responseBodyParser = response.getResponseBodyParser();
+        JsonParser responseBodyParser = response.getJsonParser();
 
         //Validate number of users on a result page
         int paginationLimit = Integer.parseInt(response.getHeader("x-pagination-limit"));
@@ -66,7 +66,7 @@ public class UsersWithRestClientTest extends BaseTest{
         GoRestValidation.validateConTentType(response);
         GoRestValidation.validatePaginationHeaders(response);
 
-        ResponseBodyParser responseBodyParser = response.getResponseBodyParser();
+        JsonParser responseBodyParser = response.getJsonParser();
 
         //Validate number of users on a result page
         int paginationLimit = Integer.parseInt(response.getHeader("x-pagination-limit"));
@@ -105,7 +105,7 @@ public class UsersWithRestClientTest extends BaseTest{
         List<String> parser = Arrays.asList(resourceURI.split("/"));
         String userId = parser.get(parser.size()-1);
 
-        ResponseBodyParser responseBodyParser = createUserResponse.getResponseBodyParser();
+        JsonParser responseBodyParser = createUserResponse.getJsonParser();
         GoRestValidation.validateUserFieldsResponseBody(responseBodyParser);
 
         // Validate Headers are not present
@@ -123,7 +123,7 @@ public class UsersWithRestClientTest extends BaseTest{
 
         Asserts.assertEquals(createUserResponse.getStatusCode(),HttpStatusCode.CREATED_201.getCode(), "Validate Status Code");
 
-        ResponseBodyParser responseBodyParser = createUserResponse.getResponseBodyParser();
+        JsonParser responseBodyParser = createUserResponse.getJsonParser();
         String responseUserId = responseBodyParser.get("id").toString();
 
         request.setPathParams("id", String.valueOf(responseUserId));
@@ -133,7 +133,7 @@ public class UsersWithRestClientTest extends BaseTest{
         //Validate status code
         Asserts.assertEquals(getUserResponse.getStatusCode(),HttpStatusCode.OK_200.getCode(), "Validate status code");
 
-        responseBodyParser = getUserResponse.getResponseBodyParser();
+        responseBodyParser = getUserResponse.getJsonParser();
 
         GoRestValidation.validateUserFieldsResponseBody(responseBodyParser);
 
@@ -151,7 +151,7 @@ public class UsersWithRestClientTest extends BaseTest{
 
         Asserts.assertEquals(createUserResponse.getStatusCode(),HttpStatusCode.CREATED_201.getCode(), "Validate Status Code");
 
-        ResponseBodyParser responseBodyParser = createUserResponse.getResponseBodyParser();
+        JsonParser responseBodyParser = createUserResponse.getJsonParser();
         String responseUserId = responseBodyParser.get("id").toString();
 
         request.setPathParams("id", String.valueOf(responseUserId));
@@ -167,7 +167,7 @@ public class UsersWithRestClientTest extends BaseTest{
         //Validate status code
         Asserts.assertEquals(updateUserResponse.getStatusCode(),HttpStatusCode.OK_200.getCode(), "Validate status code");
 
-        responseBodyParser = updateUserResponse.getResponseBodyParser();
+        responseBodyParser = updateUserResponse.getJsonParser();
 
         GoRestValidation.validateUserFieldsResponseBody(responseBodyParser);
 
@@ -186,7 +186,7 @@ public class UsersWithRestClientTest extends BaseTest{
 
         Asserts.assertEquals(createUserResponse.getStatusCode(),HttpStatusCode.CREATED_201.getCode(), "Validate Status Code");
 
-        ResponseBodyParser responseBodyParser = createUserResponse.getResponseBodyParser();
+        JsonParser responseBodyParser = createUserResponse.getJsonParser();
         String responseUserId = responseBodyParser.get("id").toString();
 
         request.setPathParams("id", String.valueOf(responseUserId));

@@ -6,7 +6,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import com.gorest.app.flows.GoRestCreateUser;
-import com.framework.core.api.restclient.ResponseBodyParser;
+import com.framework.core.api.restclient.JsonParser;
 import com.framework.core.asserts.Asserts;
 import com.framework.core.report.TestNGListener;
 import com.framework.core.utils.properties.FrameworkProperties;
@@ -45,7 +45,7 @@ public class UsersDataDrivenTest extends BaseTest{
         List<String> parser = Arrays.asList(resourceURI.split("/"));
         String userId = parser.get(parser.size()-1);
 
-        ResponseBodyParser responseBodyParser = createUserResponse.getResponseBodyParser();
+        JsonParser responseBodyParser = createUserResponse.getJsonParser();
 
         Asserts.assertEquals(responseBodyParser.get("id").toString(),userId,"Validate id");
         Asserts.assertEquals(responseBodyParser.get("name"),name,"Validate name");

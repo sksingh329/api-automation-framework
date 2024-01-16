@@ -1,11 +1,10 @@
 package com.practice.auth.tests;
 
 import com.framework.core.api.restclient.RequestParam;
-import com.framework.core.api.restclient.ResponseBodyParser;
+import com.framework.core.api.restclient.JsonParser;
 import com.framework.core.api.restclient.ResponseFetcher;
 import com.framework.core.asserts.Asserts;
 import com.framework.core.report.TestNGListener;
-import io.restassured.response.Response;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
@@ -28,7 +27,7 @@ public class WeatherAuthApiKeyTest {
 
         ResponseFetcher weatherDetailsResponse = request.createRequest().get();
 
-        ResponseBodyParser responseBodyParser = weatherDetailsResponse.getResponseBodyParser();
+        JsonParser responseBodyParser = weatherDetailsResponse.getJsonParser();
 
         Asserts.assertEquals(responseBodyParser.get("location.name").toString(),cityName,"Validate city name");
     }
@@ -41,7 +40,7 @@ public class WeatherAuthApiKeyTest {
 
         ResponseFetcher weatherDetailsResponse = request.createRequest().get();
 
-        ResponseBodyParser responseBodyParser = weatherDetailsResponse.getResponseBodyParser();
+        JsonParser responseBodyParser = weatherDetailsResponse.getJsonParser();
 
         Asserts.assertEquals(responseBodyParser.get("location.name").toString(),cityName,"Validate city name");
     }

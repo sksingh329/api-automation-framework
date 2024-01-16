@@ -1,12 +1,10 @@
 package com.practice.auth.tests;
 
 import com.framework.core.api.restclient.RequestParam;
-import com.framework.core.api.restclient.ResponseBodyParser;
+import com.framework.core.api.restclient.JsonParser;
 import com.framework.core.api.restclient.ResponseFetcher;
 import com.framework.core.report.TestNGListener;
 import com.practice.auth.app.CrocodilesCredPOJO;
-import io.restassured.response.Response;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
@@ -44,7 +42,7 @@ public class CrocodilesAuthTest {
 
         ResponseFetcher tokenResponse = createSessionCookieRequest.createRequest().post();
 
-        ResponseBodyParser responseBodyParser = tokenResponse.getResponseBodyParser();
+        JsonParser responseBodyParser = tokenResponse.getJsonParser();
         String accessToken = responseBodyParser.get("access").toString();
 
         request = new RequestParam(baseUri,"/my/crocodiles/");

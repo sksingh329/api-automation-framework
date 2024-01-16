@@ -23,8 +23,11 @@ public class ResponseFetcher {
         //TODO : throw exception if headerKey not found
         return response.getHeader(headerKey);
     }
-    public ResponseBodyParser getResponseBodyParser(){
-        return new ResponseBodyParser(response);
+    public JsonParser getJsonParser(){
+        return new JsonParser(response);
+    }
+    public XmlParser getXmlParser(){
+        return new XmlParser(response);
     }
     public String getResponseBody(){
         return response.getBody().toString();

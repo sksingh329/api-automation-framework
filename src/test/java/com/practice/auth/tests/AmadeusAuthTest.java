@@ -1,7 +1,7 @@
 package com.practice.auth.tests;
 
 import com.framework.core.api.restclient.RequestParam;
-import com.framework.core.api.restclient.ResponseBodyParser;
+import com.framework.core.api.restclient.JsonParser;
 import com.framework.core.api.restclient.ResponseFetcher;
 import com.framework.core.asserts.Asserts;
 import com.framework.core.report.TestNGListener;
@@ -29,7 +29,7 @@ public class AmadeusAuthTest {
         accessTokenRequestParam.setFormParams(formParams);
 
         ResponseFetcher response= accessTokenRequestParam.createRequest().post();
-        ResponseBodyParser responseBodyParser = response.getResponseBodyParser();
+        JsonParser responseBodyParser = response.getJsonParser();
         accessToken = responseBodyParser.get("access_token");
     }
     @Test
@@ -47,7 +47,7 @@ public class AmadeusAuthTest {
         ResponseFetcher response = request.createRequest().get();
         Asserts.assertEquals(response.getStatusCode(),200,"Validate status code");
 
-        ResponseBodyParser responseBodyParser = response.getResponseBodyParser();
+        JsonParser responseBodyParser = response.getJsonParser();
         //Validate origin and price range
         int dataSize = responseBodyParser.getList("data").size();
 

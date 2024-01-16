@@ -1,6 +1,6 @@
 package com.gorest.app.flows;
 
-import com.framework.core.api.restclient.ResponseBodyParser;
+import com.framework.core.api.restclient.JsonParser;
 import com.framework.core.api.restclient.ResponseFetcher;
 import com.framework.core.asserts.Asserts;
 import io.restassured.http.Headers;
@@ -26,7 +26,7 @@ public class GoRestValidation {
         Asserts.assertFalse(responseHeaders.hasHeaderWithName("x-pagination-total"),"Validate header x-pagination-total is not present");
         Asserts.assertFalse(responseHeaders.hasHeaderWithName("x-pagination-pages"),"Validate header x-pagination-pages is not present");
     }
-    public static void validateUserFieldsResponseBody(ResponseBodyParser responseBodyParser){
+    public static void validateUserFieldsResponseBody(JsonParser responseBodyParser){
         Asserts.assertTrue(responseBodyParser.get("id").toString().length() > 0,"Validate response body has id field");
         Asserts.assertTrue(responseBodyParser.get("name").toString().length() > 0,"Validate response body has name field");
         Asserts.assertTrue(responseBodyParser.get("email").toString().length() > 0,"Validate response body has email field");
